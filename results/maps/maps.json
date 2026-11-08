@@ -1,0 +1,23 @@
+{
+ "checks": {
+  "every map is 140 x 124 and finite": true,
+  "ensemble MAE map averages to the regression run (6.32 / 6.99 within 0.01)": true
+ },
+ "all_checks_pass": true,
+ "keys": [
+  "afnov4_mae",
+  "afnov4_r2",
+  "afnov4_smape",
+  "episode_freq",
+  "lat",
+  "lon",
+  "persistence_mae",
+  "persistence_r2",
+  "persistence_smape",
+  "resgru_mae",
+  "resgru_r2",
+  "resgru_smape",
+  "truth_mean"
+ ],
+ "minutes": 2.3
+}
