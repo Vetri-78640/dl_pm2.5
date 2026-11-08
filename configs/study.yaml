@@ -1,0 +1,66 @@
+# Settings of the controlled backbone study.
+# The Kaggle notebooks in notebooks/kaggle/ ran with these values, which live in the config
+# class C of src/study.py and in the stage sources. The local notebooks in notebooks/ read this
+# file; tests/test_config.py fails if it ever disagrees with the code.
+
+paths:
+  data: data/raw            # competition data (see data/README.md)
+  results: results          # run records downloaded from Kaggle
+
+data:
+  months: [APRIL_16, JULY_16, OCT_16, DEC_16]
+  features: [cpm25, q2, t2, u10, v10, pblh, psfc, swdown, rain]
+  log_features: [cpm25, rain]
+  grid: [140, 124]
+  hours_in: 10
+  hours_out: 16
+  window: 26
+  test_windows: 218
+  input_channels: 20
+  clip_inputs: 10.0
+
+split:
+  val_fraction: 0.18        # last 18% of each month
+  gap_hours: 12             # between the last training target and the first validation input
+  val_stride: 2
+
+episodes:
+  stl_period: 24
+  stl_robust: true
+  sigma: 3                  # residual above 3 standard deviations of the cell's residuals
+  min_value: 1.0            # and value above 1 ug/m3
+
+afno_v4:
+  encoder: [64, 128, 256]
+  afno_blocks: 6
+  mid_afno_blocks: 1
+  post_afno_blocks: 2
+  afno_heads: 8
+  mlp_ratio: 2.0
+  dropout: 0.1
+  translator_layers: 4
+
+training:                   # V4 phase A recipe, the same for every network
+  epochs: 16
+  learning_rate: 2.5e-4
+  batch: 4
+  patience: 16
+  weight_decay: 1.0e-4
+  ema_decay: 0.999
+  episode_weight: 6.0
+  loss: {huber: 0.40, gsmape: 0.25, esmape: 0.15, ecorr: 0.20}
+  horizon_weights: [0.7, 1.3]
+  seed: 42
+
+evaluation:
+  seeds: [42, 1337, 1, 2, 3]
+  bootstrap_block: 13
+  bootstrap_resamples: 2000
+  calibration_range: [0.90, 1.10]
+  concentration_bins: [0, 10, 25, 50, 100, 200]
+  decision_threshold: 0.003
+  ablation_threshold: 0.002
+
+ridge:
+  lambdas: [1.0e-2, 1.0, 1.0e+2, 1.0e+4, 1.0e+6]
+  cell_stride: 4
