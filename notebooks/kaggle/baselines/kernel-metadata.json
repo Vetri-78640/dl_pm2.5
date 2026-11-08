@@ -1,0 +1,20 @@
+{
+  "id": "imvetri0/code4cleanair-backbone-study-baselines",
+  "title": "Code4CleanAir Backbone Study - Baselines",
+  "code_file": "code4cleanair-backbone-study-baselines.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_tpu": false,
+  "enable_internet": false,
+  "dataset_sources": [],
+  "competition_sources": [
+    "anrf-aise-hack-phase-2-theme-2-pollution-forecasting-iitd"
+  ],
+  "kernel_sources": [
+    "imvetri0/afno-v4",
+    "imvetri0/code4cleanair-backbone-study-regression-metrics"
+  ],
+  "model_sources": []
+}

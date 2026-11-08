@@ -1,0 +1,17 @@
+{
+  "id": "imvetri0/code4cleanair-backbone-study-persistence",
+  "title": "Code4CleanAir Backbone Study - Persistence",
+  "code_file": "code4cleanair-backbone-study-persistence.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_tpu": false,
+  "enable_internet": false,
+  "dataset_sources": [],
+  "competition_sources": [
+    "anrf-aise-hack-phase-2-theme-2-pollution-forecasting-iitd"
+  ],
+  "kernel_sources": [],
+  "model_sources": []
+}
