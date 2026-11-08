@@ -1,0 +1,21 @@
+{
+  "id": "imvetri0/code4cleanair-backbone-study-final-round",
+  "title": "Code4CleanAir Backbone Study - Final Round",
+  "code_file": "code4cleanair-backbone-study-final-round.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": false,
+  "machine_shape": "NvidiaTeslaT4",
+  "dataset_sources": [],
+  "competition_sources": [
+    "anrf-aise-hack-phase-2-theme-2-pollution-forecasting-iitd"
+  ],
+  "kernel_sources": [
+    "imvetri0/afno-v4",
+    "imvetri0/code4cleanair-backbone-study-resgru-unet"
+  ],
+  "model_sources": []
+}
