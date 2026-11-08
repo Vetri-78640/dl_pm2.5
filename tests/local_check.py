@@ -19,7 +19,7 @@ import torch.nn.functional as F
 HERE = os.path.dirname(os.path.abspath(__file__))
 if len(sys.argv) < 2:
     sys.exit(__doc__)
-RAW = sys.argv[1]
+RAW = os.path.abspath(sys.argv[1])
 V4_PY = os.path.join(HERE, '..', 'reference', 'afno_v4', 'afno_v4.py')
 
 SOURCES = {
