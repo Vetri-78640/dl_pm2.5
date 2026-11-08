@@ -11,3 +11,9 @@ __pycache__/
 
 # local only: course documents (personal data)
 info_docs/
+
+# data: never committed; see data/README.md
+data/raw/*
+data/interim/*
+data/processed/*
+!data/*/.gitkeep
