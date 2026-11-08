@@ -1,0 +1,20 @@
+{
+  "id": "imvetri0/code4cleanair-backbone-study-patch-afno",
+  "title": "Code4CleanAir Backbone Study - Patch AFNO",
+  "code_file": "code4cleanair-backbone-study-patch-afno.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": false,
+  "machine_shape": "NvidiaTeslaT4",
+  "dataset_sources": [],
+  "competition_sources": [
+    "anrf-aise-hack-phase-2-theme-2-pollution-forecasting-iitd"
+  ],
+  "kernel_sources": [
+    "imvetri0/afno-v4"
+  ],
+  "model_sources": []
+}
