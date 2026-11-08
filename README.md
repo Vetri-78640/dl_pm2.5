@@ -86,27 +86,48 @@ src/                  notebook sources (percent format)
   baselines.py        persistence and seasonal naive on the val windows
   ridge.py            ridge regression baseline on the val windows and the test set
   maps.py             per-pixel error maps for the paper
+  local.py            setup shared by the local notebooks (loads the as-ran code, points it at data/)
+notebooks/            01 to 06, run locally on CPU with outputs (below)
+notebooks/kaggle/     the 15 Kaggle notebooks with kernel-metadata.json, exactly as they ran, and each run's log (run_log.txt)
+configs/study.yaml    the study settings; tests/test_config.py checks them against the code
+results/              run records from Kaggle: summaries, train logs, metrics JSON, maps.npz, test_scores.csv
+data/                 competition data, not committed (see data/README.md)
 scripts/              notebook builders, the ablation verdict, Kaggle helpers (tools/)
-tests/                local_check.py and the CPU dry runs, one per stage except maps
-notebooks/kaggle/     the 15 Kaggle notebooks with kernel-metadata.json, exactly as they ran
+tests/                config test, local_check.py, the CPU dry runs (one per stage except maps), pytest wrapper
 reference/afno_v4/    the AFNO V4 training script (seeds 42 and 1337), unchanged
-reports/              results.md, paper_draft.md, figures/, paper/ (paper.tex, paper.pdf, figures)
+reference/originals/  the original notebooks of the four ported networks, for local_check.py
+reports/              results.md, paper_draft.md, figures/, paper/ (report.tex, report.pdf, figures/)
 ```
+
+## Notebooks
+
+Each runs on a laptop CPU from the downloaded data and `results/`. No network is retrained.
+
+| Notebook | Owner | Contents |
+|:--|:--|:--|
+| `01_data_and_eda` | Ishan Goyal | files, grid, PM2.5 by month and place, daily cycle, autocorrelation, transport distance, what each finding changed |
+| `02_preprocessing` | Ishan Goyal | physics channels, normalization stats and episode masks recomputed and matched to V4's, leak-free split, hour estimation, the 20-channel input |
+| `03_models` | Vetriselvan R | the 9 networks and variants: parameter counts, forward pass on a real window, port check, sensitivity by distance |
+| `04_training` | Hrishi Dongre | recipe, loss, regularization, training curves of all 15 logged runs, the generalization gap |
+| `05_evaluation` | Vedant Madne | metric, persistence / seasonal naive / ridge recomputed from raw data (match Kaggle exactly), regression metrics, calibration trade-off |
+| `06_analysis_and_ablations` | Pampana Sree Adithya | decision rules applied in code, round one, final round, 5 seeds, where the winner wins, maps, ablation verdicts |
 
 ## Running
 
 ```
-pip install -r requirements.txt
-python tests/local_check.py path/to/raw
+pip install -e ".[dev]"            # or: pip install -r requirements.txt
+pytest                             # config consistency (seconds)
+pytest -m dryrun                   # every dry run and the port check (CPU, about 35 min)
+python tests/local_check.py reference/originals
 python tests/dry_run.py
 uvx --python 3.12 --from kaggle==2.2.5 --with six kaggle kernels push -p notebooks/kaggle/<model> --accelerator NvidiaTeslaT4
 ```
 
-- `local_check.py` rebuilds each original network from its archived notebook (not in this repo; pass that folder as the argument), checks the logged parameter counts, checks that port and original give the same output for the same weights, and runs forward, backward and autocast for the 20-channel ports.
+- `local_check.py` rebuilds each original network from its notebook in `reference/originals/`, checks the logged parameter counts, checks that port and original give the same output for the same weights, and runs forward, backward and autocast for the 20-channel ports.
 - The dry runs execute each stage end to end on small synthetic data on CPU. `dry_run.py` loads `src/study.py`; the others load their stage's built source from `notebooks/kaggle/`.
 - The builders (`scripts/build_*.py`) write into `notebooks/kaggle/` and would overwrite the notebooks that ran. Run them only in a copy of the repo. Rebuilding the four round-one notebooks from the current `study.py` gives files that differ in one way: the round-one notebooks hard-code seed 42, while `study.py` now reads a top-level `SEED` (42 by default) for the later stages.
 - Kaggle CLI 2.2.5 is needed to set the accelerator; it needs Python 3.11 or later, hence `uvx`. Kaggle runs at most 2 batch GPU sessions at a time.
-- The competition data is not included. Each notebook expects it attached on Kaggle, together with the V4 run output `imvetri0/afno-v4`.
+- The competition data is not included. Each Kaggle notebook expects it attached on Kaggle, together with the V4 run output `imvetri0/afno-v4`. For the local notebooks, download it as described in `data/README.md`.
 
 ## Stages
 
