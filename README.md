@@ -389,10 +389,10 @@ dl_pm2.5/
 | Role | Member | Work |
 |:--|:--|:--|
 | A - Data and pre-processing | Ishan Goyal | data analysis, the 20 input channels, normalization, hour estimation, leak-free split, episode masks (notebooks 01, 02) |
-| B - Model architectures and research | Vetriselvan R | study design and decision rules; AFNO V4 and ResGRU-UNet; the ports, the port check and the patch AFNO fix; round-one, final-round and ablation runs; model dry runs; results write-up and paper draft (notebook 03) |
+| B - Model architectures and research | Vetriselvan R | study design and decision rules; AFNO V4 and ResGRU-UNet; the ports, the port check and the patch AFNO fix; round-one, final-round and ablation runs; model dry runs; results write-up, paper draft and the report (notebook 03) |
 | C - Training pipeline | Hrishi Dongre | loss, optimizer and schedule, EMA, mixed precision, checkpoint and resume, notebook builders, seed runs, config (notebook 04) |
 | D - Evaluation and post-processing | Vedant Madne | seed ensembles and calibration, persistence / seasonal-naive / ridge baselines, MAE / RMSE / R², submissions (notebook 05) |
-| E - Experiments, analysis and documentation | Pampana Sree Adithya | 5-seed statistics and block bootstrap, ablation verdict, figures and error maps, packaging, the report (notebook 06) |
+| E - Experiments, analysis and documentation | Pampana Sree Adithya | 5-seed statistics and block bootstrap, ablation verdict, figures and error maps, report figures, packaging (notebook 06) |
 
 ---
 
