@@ -1,0 +1,394 @@
+[{"stream_name":"stderr","time":7.379330842,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":7.379373803,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":7.379390777,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":7.379395192,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":7.972184517,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":7.972221823,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":7.9722275830000005,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":7.972231556,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":15.940425787,"data":"device: cuda  backbone: resgru\n"}
+,{"stream_name":"stdout","time":16.514850715,"data":"============================================================ \n"}
+,{"stream_name":"stdout","time":16.514884332,"data":"STEP 0: environment\n"}
+,{"stream_name":"stdout","time":16.514889775,"data":" ============================================================\n"}
+,{"stream_name":"stdout","time":20.700752659,"data":"GPU: Tesla T4  sm_75  15.6 GB  torch 2.11.0+cu130\n"}
+,{"stream_name":"stdout","time":20.700806432,"data":"  data   : /kaggle/input/competitions/anrf-aise-hack-phase-2-theme-2-pollution-forecasting-iitd/aisehack-theme-2\n"}
+,{"stream_name":"stdout","time":20.700812217,"data":"  V4 out : /kaggle/input/notebooks/imvetri0/afno-v4\n"}
+,{"stream_name":"stdout","time":20.70081642,"data":"  resume : None\n"}
+,{"stream_name":"stdout","time":20.700820176,"data":"============================================================ \n"}
+,{"stream_name":"stdout","time":20.700824594,"data":"STEP 1: stats + episode masks (from the V4 output)\n"}
+,{"stream_name":"stdout","time":20.700827759,"data":" ============================================================\n"}
+,{"stream_name":"stdout","time":20.700831825,"data":"  stats from: /kaggle/input/notebooks/imvetri0/afno-v4/stats.npz\n"}
+,{"stream_name":"stdout","time":27.020792065,"data":"  APRIL_16: T=715  ep_ratio=0.0208\n"}
+,{"stream_name":"stdout","time":32.232775744,"data":"  JULY_16: T=739  ep_ratio=0.0197\n"}
+,{"stream_name":"stdout","time":37.110793953,"data":"  OCT_16: T=739  ep_ratio=0.0170\n"}
+,{"stream_name":"stdout","time":41.754711773,"data":"  DEC_16: T=739  ep_ratio=0.0217\n"}
+,{"stream_name":"stdout","time":41.754748911,"data":"============================================================ \n"}
+,{"stream_name":"stdout","time":41.754753832,"data":"STEP 2: datasets\n"}
+,{"stream_name":"stdout","time":41.754757592,"data":" ============================================================\n"}
+,{"stream_name":"stdout","time":42.499687444,"data":"  train: 2257 windows  ep_density mean=0.0201\n"}
+,{"stream_name":"stdout","time":42.705908546,"data":"  val hour estimation: \u003c=1h 0.977\n"}
+,{"stream_name":"stdout","time":42.705967565,"data":"  val: 214 windows  ep_density mean=0.0182\n"}
+,{"stream_name":"stdout","time":46.235842859,"data":"  test start-hour histogram: [16, 0, 19, 0, 13, 7, 10, 10, 8, 10, 9, 8, 8, 12, 5, 15, 9, 9, 9, 6, 12, 7, 12, 4]\n"}
+,{"stream_name":"stdout","time":46.235876917,"data":"============================================================ \n"}
+,{"stream_name":"stdout","time":46.235882862,"data":"STEP 3: pipeline check (V4 checkpoint on this validation set)\n"}
+,{"stream_name":"stdout","time":46.235904025,"data":" ============================================================\n"}
+,{"stream_name":"stdout","time":59.682327649,"data":"  V4 seed-42 checkpoint: logged val 0.9110, re-evaluated here 0.9110 (diff -0.00000, tolerance 0.002)\n"}
+,{"stream_name":"stdout","time":59.68236446,"data":"============================================================ \n"}
+,{"stream_name":"stdout","time":59.68236961,"data":"STEP 4: build afnov4_allskip\n"}
+,{"stream_name":"stdout","time":59.682373597,"data":" ============================================================\n"}
+,{"stream_name":"stdout","time":59.949908477,"data":"  afnov4_allskip params: 7,668,161 (7.67M)\n"}
+,{"stream_name":"stdout","time":60.203422359,"data":"  output (1, 16, 140, 124); at init it equals persistence (max diff 0.00e+00)\n"}
+,{"stream_name":"stdout","time":61.401161156,"data":"  micro-batch 4: peak 6.63 GB of 15.6 GB -\u003e ok\n"}
+,{"stream_name":"stdout","time":61.623028262,"data":"============================================================ \n"}
+,{"stream_name":"stdout","time":61.62305547,"data":"STEP 5: train afnov4_allskip_s42_phaseA\n"}
+,{"stream_name":"stdout","time":61.623060435,"data":" ============================================================\n"}
+,{"stream_name":"stdout","time":66.443918909,"data":"[afnov4_allskip_s42_phaseA] 564 optimizer steps per epoch, micro-batch 4 x 1\n"}
+,{"stream_name":"stdout","time":67.783408387,"data":"  [afnov4_allskip_s42_phaseA E1 0/564] loss=0.2175 gsm=0.2733 esm=0.5180 ec=0.8686 lr=1.25e-05\n"}
+,{"stream_name":"stdout","time":126.19791522,"data":"  [afnov4_allskip_s42_phaseA E1 100/564] loss=0.2070 gsm=0.2891 esm=0.4008 ec=0.8379 lr=4.08e-05\n"}
+,{"stream_name":"stdout","time":184.080602689,"data":"  [afnov4_allskip_s42_phaseA E1 200/564] loss=0.1904 gsm=0.2860 esm=0.3512 ec=0.8757 lr=1.11e-04\n"}
+,{"stream_name":"stdout","time":242.753173045,"data":"  [afnov4_allskip_s42_phaseA E1 300/564] loss=0.1607 gsm=0.2640 esm=0.2467 ec=0.8864 lr=1.91e-04\n"}
+,{"stream_name":"stdout","time":301.395794751,"data":"  [afnov4_allskip_s42_phaseA E1 400/564] loss=0.1643 gsm=0.2835 esm=0.2485 ec=0.9133 lr=2.43e-04\n"}
+,{"stream_name":"stdout","time":360.120026388,"data":"  [afnov4_allskip_s42_phaseA E1 500/564] loss=0.1472 gsm=0.2513 esm=0.2574 ec=0.9330 lr=2.50e-04\n"}
+,{"stream_name":"stdout","time":408.979139736,"data":"[afnov4_allskip_s42_phaseA] E1/16 (342s, peak 6.7 GB, ~86 min left)\n"}
+,{"stream_name":"stdout","time":408.9791972,"data":"  train | loss=0.1819 gsmape=0.2737 esmape=0.3402 ecorr=0.8901\n"}
+,{"stream_name":"stdout","time":408.97920413,"data":"  val   | score=0.8993  NormGlobalSMAPE=0.8694 NormEpisodeCorr=0.9588 NormEpisodeSMAPE=0.8697  (raw: gsm=0.2612 esm=0.2607 ec=0.9175)  *BEST -\u003e saved*\n"}
+,{"stream_name":"stdout","time":409.718025769,"data":"  [afnov4_allskip_s42_phaseA E2 0/564] loss=0.1605 gsm=0.2337 esm=0.3195 ec=0.8860 lr=2.50e-04\n"}
+,{"stream_name":"stdout","time":468.509852236,"data":"  [afnov4_allskip_s42_phaseA E2 100/564] loss=0.1387 gsm=0.2487 esm=0.2111 ec=0.9230 lr=2.50e-04\n"}
+,{"stream_name":"stdout","time":527.336612199,"data":"  [afnov4_allskip_s42_phaseA E2 200/564] loss=0.1436 gsm=0.2409 esm=0.2621 ec=0.9261 lr=2.49e-04\n"}
+,{"stream_name":"stdout","time":586.174106797,"data":"  [afnov4_allskip_s42_phaseA E2 300/564] loss=0.1270 gsm=0.2454 esm=0.1713 ec=0.9600 lr=2.49e-04\n"}
+,{"stream_name":"stdout","time":645.01596903,"data":"  [afnov4_allskip_s42_phaseA E2 400/564] loss=0.1353 gsm=0.2251 esm=0.2759 ec=0.9407 lr=2.48e-04\n"}
+,{"stream_name":"stdout","time":703.827614567,"data":"  [afnov4_allskip_s42_phaseA E2 500/564] loss=0.1292 gsm=0.2447 esm=0.1981 ec=0.9707 lr=2.47e-04\n"}
+,{"stream_name":"stdout","time":752.768512977,"data":"[afnov4_allskip_s42_phaseA] E2/16 (344s, peak 6.7 GB, ~80 min left)\n"}
+,{"stream_name":"stdout","time":752.768559627,"data":"  train | loss=0.1358 gsmape=0.2379 esmape=0.2270 ecorr=0.9406\n"}
+,{"stream_name":"stdout","time":752.768565832,"data":"  val   | score=0.9088  NormGlobalSMAPE=0.8848 NormEpisodeCorr=0.9635 NormEpisodeSMAPE=0.8781  (raw: gsm=0.2304 esm=0.2437 ec=0.9269)  *BEST -\u003e saved*\n"}
+,{"stream_name":"stdout","time":753.545833215,"data":"  [afnov4_allskip_s42_phaseA E3 0/564] loss=0.1215 gsm=0.2241 esm=0.1906 ec=0.9526 lr=2.46e-04\n"}
+,{"stream_name":"stdout","time":812.370262364,"data":"  [afnov4_allskip_s42_phaseA E3 100/564] loss=0.1418 gsm=0.2492 esm=0.2429 ec=0.9623 lr=2.45e-04\n"}
+,{"stream_name":"stdout","time":871.193262921,"data":"  [afnov4_allskip_s42_phaseA E3 200/564] loss=0.1233 gsm=0.2326 esm=0.1519 ec=0.9406 lr=2.44e-04\n"}
+,{"stream_name":"stdout","time":930.006891957,"data":"  [afnov4_allskip_s42_phaseA E3 300/564] loss=0.1379 gsm=0.2434 esm=0.2614 ec=0.9558 lr=2.42e-04\n"}
+,{"stream_name":"stdout","time":988.838807205,"data":"  [afnov4_allskip_s42_phaseA E3 400/564] loss=0.0908 gsm=0.1884 esm=0.1249 ec=0.9742 lr=2.40e-04\n"}
+,{"stream_name":"stdout","time":1047.655458984,"data":"  [afnov4_allskip_s42_phaseA E3 500/564] loss=0.1086 gsm=0.2069 esm=0.1882 ec=0.9689 lr=2.39e-04\n"}
+,{"stream_name":"stdout","time":1096.587338621,"data":"[afnov4_allskip_s42_phaseA] E3/16 (344s, peak 6.7 GB, ~74 min left)\n"}
+,{"stream_name":"stdout","time":1096.587376574,"data":"  train | loss=0.1149 gsmape=0.2142 esmape=0.1843 ecorr=0.9575\n"}
+,{"stream_name":"stdout","time":1096.587383409,"data":"  val   | score=0.9116  NormGlobalSMAPE=0.8920 NormEpisodeCorr=0.9650 NormEpisodeSMAPE=0.8777  (raw: gsm=0.2160 esm=0.2445 ec=0.9299)  *BEST -\u003e saved*\n"}
+,{"stream_name":"stdout","time":1097.317915354,"data":"  [afnov4_allskip_s42_phaseA E4 0/564] loss=0.0873 gsm=0.1820 esm=0.1252 ec=0.9751 lr=2.37e-04\n"}
+,{"stream_name":"stdout","time":1156.132036821,"data":"  [afnov4_allskip_s42_phaseA E4 100/564] loss=0.1038 gsm=0.2018 esm=0.1469 ec=0.9574 lr=2.35e-04\n"}
+,{"stream_name":"stdout","time":1214.940674838,"data":"  [afnov4_allskip_s42_phaseA E4 200/564] loss=0.1059 gsm=0.2012 esm=0.1689 ec=0.9610 lr=2.33e-04\n"}
+,{"stream_name":"stdout","time":1273.767069459,"data":"  [afnov4_allskip_s42_phaseA E4 300/564] loss=0.1065 gsm=0.2027 esm=0.1851 ec=0.9562 lr=2.31e-04\n"}
+,{"stream_name":"stdout","time":1332.578322474,"data":"  [afnov4_allskip_s42_phaseA E4 400/564] loss=0.1062 gsm=0.1870 esm=0.2188 ec=0.9667 lr=2.28e-04\n"}
+,{"stream_name":"stdout","time":1391.427008293,"data":"  [afnov4_allskip_s42_phaseA E4 500/564] loss=0.0916 gsm=0.1905 esm=0.1319 ec=0.9702 lr=2.25e-04\n"}
+,{"stream_name":"stdout","time":1440.365223587,"data":"[afnov4_allskip_s42_phaseA] E4/16 (344s, peak 6.7 GB, ~69 min left)\n"}
+,{"stream_name":"stdout","time":1440.365261691,"data":"  train | loss=0.1013 gsmape=0.1981 esmape=0.1559 ecorr=0.9666\n"}
+,{"stream_name":"stdout","time":1440.365269462,"data":"  val   | score=0.9126  NormGlobalSMAPE=0.8963 NormEpisodeCorr=0.9654 NormEpisodeSMAPE=0.8761  (raw: gsm=0.2075 esm=0.2478 ec=0.9308)  *BEST -\u003e saved*\n"}
+,{"stream_name":"stdout","time":1441.093573818,"data":"  [afnov4_allskip_s42_phaseA E5 0/564] loss=0.0955 gsm=0.1900 esm=0.1518 ec=0.9738 lr=2.24e-04\n"}
+,{"stream_name":"stdout","time":1499.921170943,"data":"  [afnov4_allskip_s42_phaseA E5 100/564] loss=0.0902 gsm=0.1946 esm=0.1122 ec=0.9772 lr=2.21e-04\n"}
+,{"stream_name":"stdout","time":1558.748354344,"data":"  [afnov4_allskip_s42_phaseA E5 200/564] loss=0.0830 gsm=0.1700 esm=0.1191 ec=0.9698 lr=2.18e-04\n"}
+,{"stream_name":"stdout","time":1617.572523831,"data":"  [afnov4_allskip_s42_phaseA E5 300/564] loss=0.0894 gsm=0.1796 esm=0.1359 ec=0.9708 lr=2.15e-04\n"}
+,{"stream_name":"stdout","time":1676.472840248,"data":"  [afnov4_allskip_s42_phaseA E5 400/564] loss=0.0851 gsm=0.1737 esm=0.1272 ec=0.9745 lr=2.11e-04\n"}
+,{"stream_name":"stdout","time":1735.190465329,"data":"  [afnov4_allskip_s42_phaseA E5 500/564] loss=0.0764 gsm=0.1752 esm=0.0906 ec=0.9820 lr=2.08e-04\n"}
+,{"stream_name":"stdout","time":1784.086489522,"data":"[afnov4_allskip_s42_phaseA] E5/16 (344s, peak 6.7 GB, ~63 min left)\n"}
+,{"stream_name":"stdout","time":1784.086528586,"data":"  train | loss=0.0904 gsmape=0.1845 esmape=0.1338 ecorr=0.9731\n"}
+,{"stream_name":"stdout","time":1784.086534989,"data":"  val   | score=0.9122  NormGlobalSMAPE=0.8982 NormEpisodeCorr=0.9649 NormEpisodeSMAPE=0.8735  (raw: gsm=0.2036 esm=0.2530 ec=0.9297)  (best=0.9126)\n"}
+,{"stream_name":"stdout","time":1784.807610487,"data":"  [afnov4_allskip_s42_phaseA E6 0/564] loss=0.0879 gsm=0.1774 esm=0.1433 ec=0.9710 lr=2.06e-04\n"}
+,{"stream_name":"stdout","time":1843.640358915,"data":"  [afnov4_allskip_s42_phaseA E6 100/564] loss=0.0703 gsm=0.1583 esm=0.0978 ec=0.9817 lr=2.02e-04\n"}
+,{"stream_name":"stdout","time":1902.450719964,"data":"  [afnov4_allskip_s42_phaseA E6 200/564] loss=0.0825 gsm=0.1750 esm=0.1048 ec=0.9674 lr=1.99e-04\n"}
+,{"stream_name":"stdout","time":1961.284582931,"data":"  [afnov4_allskip_s42_phaseA E6 300/564] loss=0.0844 gsm=0.1712 esm=0.1346 ec=0.9709 lr=1.95e-04\n"}
+,{"stream_name":"stdout","time":2020.094089086,"data":"  [afnov4_allskip_s42_phaseA E6 400/564] loss=0.0879 gsm=0.1736 esm=0.1397 ec=0.9760 lr=1.91e-04\n"}
+,{"stream_name":"stdout","time":2078.910223498,"data":"  [afnov4_allskip_s42_phaseA E6 500/564] loss=0.0851 gsm=0.1851 esm=0.1167 ec=0.9818 lr=1.87e-04\n"}
+,{"stream_name":"stdout","time":2127.801599258,"data":"[afnov4_allskip_s42_phaseA] E6/16 (344s, peak 6.7 GB, ~57 min left)\n"}
+,{"stream_name":"stdout","time":2127.801642631,"data":"  train | loss=0.0820 gsmape=0.1729 esmape=0.1178 ecorr=0.9775\n"}
+,{"stream_name":"stdout","time":2127.801649751,"data":"  val   | score=0.9112  NormGlobalSMAPE=0.8995 NormEpisodeCorr=0.9640 NormEpisodeSMAPE=0.8700  (raw: gsm=0.2010 esm=0.2600 ec=0.9280)  (best=0.9126)\n"}
+,{"stream_name":"stdout","time":2128.574331567,"data":"  [afnov4_allskip_s42_phaseA E7 0/564] loss=0.0734 gsm=0.1523 esm=0.1179 ec=0.9840 lr=1.84e-04\n"}
+,{"stream_name":"stdout","time":2187.388058432,"data":"  [afnov4_allskip_s42_phaseA E7 100/564] loss=0.0729 gsm=0.1630 esm=0.0954 ec=0.9824 lr=1.80e-04\n"}
+,{"stream_name":"stdout","time":2246.187510139,"data":"  [afnov4_allskip_s42_phaseA E7 200/564] loss=0.0768 gsm=0.1601 esm=0.1255 ec=0.9829 lr=1.76e-04\n"}
+,{"stream_name":"stdout","time":2305.000701134,"data":"  [afnov4_allskip_s42_phaseA E7 300/564] loss=0.0789 gsm=0.1641 esm=0.1313 ec=0.9856 lr=1.72e-04\n"}
+,{"stream_name":"stdout","time":2363.812639163,"data":"  [afnov4_allskip_s42_phaseA E7 400/564] loss=0.0621 gsm=0.1386 esm=0.0814 ec=0.9805 lr=1.68e-04\n"}
+,{"stream_name":"stdout","time":2422.62072006,"data":"  [afnov4_allskip_s42_phaseA E7 500/564] loss=0.0716 gsm=0.1554 esm=0.0989 ec=0.9804 lr=1.63e-04\n"}
+,{"stream_name":"stdout","time":2471.561788871,"data":"[afnov4_allskip_s42_phaseA] E7/16 (344s, peak 6.7 GB, ~52 min left)\n"}
+,{"stream_name":"stdout","time":2471.561826806,"data":"  train | loss=0.0751 gsmape=0.1629 esmape=0.1050 ecorr=0.9811\n"}
+,{"stream_name":"stdout","time":2471.561832524,"data":"  val   | score=0.9102  NormGlobalSMAPE=0.9000 NormEpisodeCorr=0.9635 NormEpisodeSMAPE=0.8670  (raw: gsm=0.2001 esm=0.2661 ec=0.9271)  (best=0.9126)\n"}
+,{"stream_name":"stdout","time":2472.293083849,"data":"  [afnov4_allskip_s42_phaseA E8 0/564] loss=0.0674 gsm=0.1499 esm=0.0920 ec=0.9810 lr=1.61e-04\n"}
+,{"stream_name":"stdout","time":2531.155143191,"data":"  [afnov4_allskip_s42_phaseA E8 100/564] loss=0.0703 gsm=0.1581 esm=0.1039 ec=0.9816 lr=1.56e-04\n"}
+,{"stream_name":"stdout","time":2590.100658199,"data":"  [afnov4_allskip_s42_phaseA E8 200/564] loss=0.0762 gsm=0.1651 esm=0.1006 ec=0.9753 lr=1.52e-04\n"}
+,{"stream_name":"stdout","time":2649.156181949,"data":"  [afnov4_allskip_s42_phaseA E8 300/564] loss=0.0783 gsm=0.1598 esm=0.1283 ec=0.9763 lr=1.47e-04\n"}
+,{"stream_name":"stdout","time":2708.17577627,"data":"  [afnov4_allskip_s42_phaseA E8 400/564] loss=0.0701 gsm=0.1580 esm=0.0923 ec=0.9863 lr=1.43e-04\n"}
+,{"stream_name":"stdout","time":2767.138768421,"data":"  [afnov4_allskip_s42_phaseA E8 500/564] loss=0.0664 gsm=0.1549 esm=0.0804 ec=0.9883 lr=1.38e-04\n"}
+,{"stream_name":"stdout","time":2816.061410521,"data":"[afnov4_allskip_s42_phaseA] E8/16 (344s, peak 6.7 GB, ~46 min left)\n"}
+,{"stream_name":"stdout","time":2816.061453513,"data":"  train | loss=0.0697 gsmape=0.1546 esmape=0.0959 ecorr=0.9836\n"}
+,{"stream_name":"stdout","time":2816.061460493,"data":"  val   | score=0.9090  NormGlobalSMAPE=0.9001 NormEpisodeCorr=0.9628 NormEpisodeSMAPE=0.8642  (raw: gsm=0.1998 esm=0.2716 ec=0.9257)  (best=0.9126)\n"}
+,{"stream_name":"stdout","time":2816.796327809,"data":"  [afnov4_allskip_s42_phaseA E9 0/564] loss=0.0715 gsm=0.1632 esm=0.0874 ec=0.9844 lr=1.35e-04\n"}
+,{"stream_name":"stdout","time":2875.696408605,"data":"  [afnov4_allskip_s42_phaseA E9 100/564] loss=0.0684 gsm=0.1473 esm=0.1012 ec=0.9813 lr=1.31e-04\n"}
+,{"stream_name":"stdout","time":2934.531495679,"data":"  [afnov4_allskip_s42_phaseA E9 200/564] loss=0.0661 gsm=0.1498 esm=0.0901 ec=0.9861 lr=1.26e-04\n"}
+,{"stream_name":"stdout","time":2993.326749891,"data":"  [afnov4_allskip_s42_phaseA E9 300/564] loss=0.0668 gsm=0.1502 esm=0.0912 ec=0.9841 lr=1.22e-04\n"}
+,{"stream_name":"stdout","time":3052.153149307,"data":"  [afnov4_allskip_s42_phaseA E9 400/564] loss=0.0599 gsm=0.1342 esm=0.0905 ec=0.9872 lr=1.17e-04\n"}
+,{"stream_name":"stdout","time":3110.990652465,"data":"  [afnov4_allskip_s42_phaseA E9 500/564] loss=0.0673 gsm=0.1541 esm=0.0804 ec=0.9863 lr=1.12e-04\n"}
+,{"stream_name":"stdout","time":3159.888206057,"data":"[afnov4_allskip_s42_phaseA] E9/16 (344s, peak 6.7 GB, ~40 min left)\n"}
+,{"stream_name":"stdout","time":3159.888246583,"data":"  train | loss=0.0655 gsmape=0.1479 esmape=0.0891 ecorr=0.9856\n"}
+,{"stream_name":"stdout","time":3159.888254092,"data":"  val   | score=0.9078  NormGlobalSMAPE=0.9000 NormEpisodeCorr=0.9620 NormEpisodeSMAPE=0.8615  (raw: gsm=0.1999 esm=0.2770 ec=0.9240)  (best=0.9126)\n"}
+,{"stream_name":"stdout","time":3160.665584088,"data":"  [afnov4_allskip_s42_phaseA E10 0/564] loss=0.0590 gsm=0.1381 esm=0.0749 ec=0.9890 lr=1.09e-04\n"}
+,{"stream_name":"stdout","time":3219.513769147,"data":"  [afnov4_allskip_s42_phaseA E10 100/564] loss=0.0642 gsm=0.1485 esm=0.0823 ec=0.9895 lr=1.05e-04\n"}
+,{"stream_name":"stdout","time":3278.455559183,"data":"  [afnov4_allskip_s42_phaseA E10 200/564] loss=0.0590 gsm=0.1394 esm=0.0631 ec=0.9877 lr=1.00e-04\n"}
+,{"stream_name":"stdout","time":3337.438021078,"data":"  [afnov4_allskip_s42_phaseA E10 300/564] loss=0.0658 gsm=0.1544 esm=0.0827 ec=0.9857 lr=9.60e-05\n"}
+,{"stream_name":"stdout","time":3396.47083052,"data":"  [afnov4_allskip_s42_phaseA E10 400/564] loss=0.0566 gsm=0.1353 esm=0.0672 ec=0.9883 lr=9.15e-05\n"}
+,{"stream_name":"stdout","time":3455.557280353,"data":"  [afnov4_allskip_s42_phaseA E10 500/564] loss=0.0626 gsm=0.1429 esm=0.0828 ec=0.9908 lr=8.71e-05\n"}
+,{"stream_name":"stdout","time":3504.673174397,"data":"[afnov4_allskip_s42_phaseA] E10/16 (345s, peak 6.7 GB, ~34 min left)\n"}
+,{"stream_name":"stdout","time":3504.6732095,"data":"  train | loss=0.0618 gsmape=0.1420 esmape=0.0825 ecorr=0.9871\n"}
+,{"stream_name":"stdout","time":3504.673225272,"data":"  val   | score=0.9068  NormGlobalSMAPE=0.8999 NormEpisodeCorr=0.9616 NormEpisodeSMAPE=0.8589  (raw: gsm=0.2003 esm=0.2821 ec=0.9232)  (best=0.9126)\n"}
+,{"stream_name":"stdout","time":3505.446652126,"data":"  [afnov4_allskip_s42_phaseA E11 0/564] loss=0.0605 gsm=0.1425 esm=0.0816 ec=0.9872 lr=8.44e-05\n"}
+,{"stream_name":"stdout","time":3564.46588762,"data":"  [afnov4_allskip_s42_phaseA E11 100/564] loss=0.0598 gsm=0.1428 esm=0.0723 ec=0.9869 lr=8.01e-05\n"}
+,{"stream_name":"stdout","time":3623.581841756,"data":"  [afnov4_allskip_s42_phaseA E11 200/564] loss=0.0610 gsm=0.1361 esm=0.0934 ec=0.9889 lr=7.58e-05\n"}
+,{"stream_name":"stdout","time":3682.685509845,"data":"  [afnov4_allskip_s42_phaseA E11 300/564] loss=0.0619 gsm=0.1478 esm=0.0667 ec=0.9861 lr=7.16e-05\n"}
+,{"stream_name":"stdout","time":3741.81637328,"data":"  [afnov4_allskip_s42_phaseA E11 400/564] loss=0.0548 gsm=0.1246 esm=0.0801 ec=0.9884 lr=6.75e-05\n"}
+,{"stream_name":"stdout","time":3800.975057912,"data":"  [afnov4_allskip_s42_phaseA E11 500/564] loss=0.0625 gsm=0.1431 esm=0.0763 ec=0.9902 lr=6.35e-05\n"}
+,{"stream_name":"stdout","time":3850.116126463,"data":"[afnov4_allskip_s42_phaseA] E11/16 (345s, peak 6.7 GB, ~29 min left)\n"}
+,{"stream_name":"stdout","time":3850.11620525,"data":"  train | loss=0.0589 gsmape=0.1374 esmape=0.0772 ecorr=0.9882\n"}
+,{"stream_name":"stdout","time":3850.11621274,"data":"  val   | score=0.9059  NormGlobalSMAPE=0.8996 NormEpisodeCorr=0.9611 NormEpisodeSMAPE=0.8570  (raw: gsm=0.2009 esm=0.2860 ec=0.9223)  (best=0.9126)\n"}
+,{"stream_name":"stdout","time":3850.888572984,"data":"  [afnov4_allskip_s42_phaseA E12 0/564] loss=0.0523 gsm=0.1252 esm=0.0692 ec=0.9909 lr=6.10e-05\n"}
+,{"stream_name":"stdout","time":3909.962575742,"data":"  [afnov4_allskip_s42_phaseA E12 100/564] loss=0.0565 gsm=0.1286 esm=0.0854 ec=0.9874 lr=5.71e-05\n"}
+,{"stream_name":"stdout","time":3969.034517296,"data":"  [afnov4_allskip_s42_phaseA E12 200/564] loss=0.0578 gsm=0.1357 esm=0.0655 ec=0.9846 lr=5.33e-05\n"}
+,{"stream_name":"stdout","time":4028.100821948,"data":"  [afnov4_allskip_s42_phaseA E12 300/564] loss=0.0586 gsm=0.1372 esm=0.0770 ec=0.9852 lr=4.96e-05\n"}
+,{"stream_name":"stdout","time":4087.14457975,"data":"  [afnov4_allskip_s42_phaseA E12 400/564] loss=0.0583 gsm=0.1368 esm=0.0769 ec=0.9921 lr=4.60e-05\n"}
+,{"stream_name":"stdout","time":4146.222264197,"data":"  [afnov4_allskip_s42_phaseA E12 500/564] loss=0.0532 gsm=0.1283 esm=0.0646 ec=0.9899 lr=4.25e-05\n"}
+,{"stream_name":"stdout","time":4195.256471359,"data":"[afnov4_allskip_s42_phaseA] E12/16 (345s, peak 6.7 GB, ~23 min left)\n"}
+,{"stream_name":"stdout","time":4195.256509725,"data":"  train | loss=0.0567 gsmape=0.1337 esmape=0.0734 ecorr=0.9892\n"}
+,{"stream_name":"stdout","time":4195.256517453,"data":"  val   | score=0.9051  NormGlobalSMAPE=0.8993 NormEpisodeCorr=0.9607 NormEpisodeSMAPE=0.8552  (raw: gsm=0.2015 esm=0.2897 ec=0.9214)  (best=0.9126)\n"}
+,{"stream_name":"stdout","time":4195.992930208,"data":"  [afnov4_allskip_s42_phaseA E13 0/564] loss=0.0546 gsm=0.1309 esm=0.0742 ec=0.9916 lr=4.03e-05\n"}
+,{"stream_name":"stdout","time":4255.028107109,"data":"  [afnov4_allskip_s42_phaseA E13 100/564] loss=0.0564 gsm=0.1359 esm=0.0743 ec=0.9894 lr=3.70e-05\n"}
+,{"stream_name":"stdout","time":4314.031052734,"data":"  [afnov4_allskip_s42_phaseA E13 200/564] loss=0.0608 gsm=0.1471 esm=0.0668 ec=0.9901 lr=3.38e-05\n"}
+,{"stream_name":"stdout","time":4373.187433235,"data":"  [afnov4_allskip_s42_phaseA E13 300/564] loss=0.0550 gsm=0.1237 esm=0.0808 ec=0.9888 lr=3.08e-05\n"}
+,{"stream_name":"stdout","time":4432.298068523,"data":"  [afnov4_allskip_s42_phaseA E13 400/564] loss=0.0527 gsm=0.1279 esm=0.0712 ec=0.9933 lr=2.78e-05\n"}
+,{"stream_name":"stdout","time":4491.391981612,"data":"  [afnov4_allskip_s42_phaseA E13 500/564] loss=0.0466 gsm=0.1098 esm=0.0706 ec=0.9934 lr=2.50e-05\n"}
+,{"stream_name":"stdout","time":4540.516329976,"data":"[afnov4_allskip_s42_phaseA] E13/16 (345s, peak 6.7 GB, ~17 min left)\n"}
+,{"stream_name":"stdout","time":4540.516369292,"data":"  train | loss=0.0552 gsmape=0.1312 esmape=0.0705 ecorr=0.9898\n"}
+,{"stream_name":"stdout","time":4540.516376324,"data":"  val   | score=0.9044  NormGlobalSMAPE=0.8990 NormEpisodeCorr=0.9605 NormEpisodeSMAPE=0.8538  (raw: gsm=0.2019 esm=0.2924 ec=0.9210)  (best=0.9126)\n"}
+,{"stream_name":"stdout","time":4541.24495955,"data":"  [afnov4_allskip_s42_phaseA E14 0/564] loss=0.0594 gsm=0.1364 esm=0.0826 ec=0.9878 lr=2.33e-05\n"}
+,{"stream_name":"stdout","time":4600.301353921,"data":"  [afnov4_allskip_s42_phaseA E14 100/564] loss=0.0501 gsm=0.1191 esm=0.0698 ec=0.9874 lr=2.07e-05\n"}
+,{"stream_name":"stdout","time":4659.35203247,"data":"  [afnov4_allskip_s42_phaseA E14 200/564] loss=0.0542 gsm=0.1280 esm=0.0717 ec=0.9899 lr=1.82e-05\n"}
+,{"stream_name":"stdout","time":4718.52687141,"data":"  [afnov4_allskip_s42_phaseA E14 300/564] loss=0.0574 gsm=0.1365 esm=0.0742 ec=0.9871 lr=1.59e-05\n"}
+,{"stream_name":"stdout","time":4777.665326071,"data":"  [afnov4_allskip_s42_phaseA E14 400/564] loss=0.0521 gsm=0.1282 esm=0.0616 ec=0.9908 lr=1.38e-05\n"}
+,{"stream_name":"stdout","time":4836.781934311,"data":"  [afnov4_allskip_s42_phaseA E14 500/564] loss=0.0609 gsm=0.1377 esm=0.0818 ec=0.9867 lr=1.18e-05\n"}
+,{"stream_name":"stdout","time":4885.85515701,"data":"[afnov4_allskip_s42_phaseA] E14/16 (345s, peak 6.7 GB, ~11 min left)\n"}
+,{"stream_name":"stdout","time":4885.855196864,"data":"  train | loss=0.0542 gsmape=0.1295 esmape=0.0684 ecorr=0.9902\n"}
+,{"stream_name":"stdout","time":4885.85520509,"data":"  val   | score=0.9040  NormGlobalSMAPE=0.8989 NormEpisodeCorr=0.9603 NormEpisodeSMAPE=0.8527  (raw: gsm=0.2023 esm=0.2945 ec=0.9206)  (best=0.9126)\n"}
+,{"stream_name":"stdout","time":4886.584065921,"data":"  [afnov4_allskip_s42_phaseA E15 0/564] loss=0.0549 gsm=0.1313 esm=0.0646 ec=0.9926 lr=1.06e-05\n"}
+,{"stream_name":"stdout","time":4945.661228002,"data":"  [afnov4_allskip_s42_phaseA E15 100/564] loss=0.0565 gsm=0.1375 esm=0.0740 ec=0.9910 lr=8.79e-06\n"}
+,{"stream_name":"stdout","time":5004.898784475,"data":"  [afnov4_allskip_s42_phaseA E15 200/564] loss=0.0569 gsm=0.1254 esm=0.0885 ec=0.9893 lr=7.19e-06\n"}
+,{"stream_name":"stdout","time":5064.129155301,"data":"  [afnov4_allskip_s42_phaseA E15 300/564] loss=0.0538 gsm=0.1275 esm=0.0751 ec=0.9904 lr=5.74e-06\n"}
+,{"stream_name":"stdout","time":5123.403024577,"data":"  [afnov4_allskip_s42_phaseA E15 400/564] loss=0.0611 gsm=0.1466 esm=0.0708 ec=0.9852 lr=4.46e-06\n"}
+,{"stream_name":"stdout","time":5182.729622727,"data":"  [afnov4_allskip_s42_phaseA E15 500/564] loss=0.0574 gsm=0.1373 esm=0.0698 ec=0.9895 lr=3.34e-06\n"}
+,{"stream_name":"stdout","time":5231.932407056,"data":"[afnov4_allskip_s42_phaseA] E15/16 (346s, peak 6.7 GB, ~6 min left)\n"}
+,{"stream_name":"stdout","time":5231.932463545,"data":"  train | loss=0.0536 gsmape=0.1286 esmape=0.0672 ecorr=0.9904\n"}
+,{"stream_name":"stdout","time":5231.93247073,"data":"  val   | score=0.9036  NormGlobalSMAPE=0.8987 NormEpisodeCorr=0.9601 NormEpisodeSMAPE=0.8519  (raw: gsm=0.2026 esm=0.2961 ec=0.9203)  (best=0.9126)\n"}
+,{"stream_name":"stdout","time":5232.667754676,"data":"  [afnov4_allskip_s42_phaseA E16 0/564] loss=0.0525 gsm=0.1341 esm=0.0558 ec=0.9927 lr=2.70e-06\n"}
+,{"stream_name":"stdout","time":5292.04466045,"data":"  [afnov4_allskip_s42_phaseA E16 100/564] loss=0.0546 gsm=0.1334 esm=0.0684 ec=0.9901 lr=1.85e-06\n"}
+,{"stream_name":"stdout","time":5351.180243891,"data":"  [afnov4_allskip_s42_phaseA E16 200/564] loss=0.0540 gsm=0.1275 esm=0.0681 ec=0.9897 lr=1.16e-06\n"}
+,{"stream_name":"stdout","time":5410.462002842,"data":"  [afnov4_allskip_s42_phaseA E16 300/564] loss=0.0543 gsm=0.1313 esm=0.0647 ec=0.9899 lr=6.38e-07\n"}
+,{"stream_name":"stdout","time":5469.805306949,"data":"  [afnov4_allskip_s42_phaseA E16 400/564] loss=0.0519 gsm=0.1200 esm=0.0710 ec=0.9899 lr=2.83e-07\n"}
+,{"stream_name":"stdout","time":5529.077584463,"data":"  [afnov4_allskip_s42_phaseA E16 500/564] loss=0.0546 gsm=0.1343 esm=0.0617 ec=0.9923 lr=9.48e-08\n"}
+,{"stream_name":"stdout","time":5578.099630231,"data":"[afnov4_allskip_s42_phaseA] E16/16 (346s, peak 6.7 GB, ~0 min left)\n"}
+,{"stream_name":"stdout","time":5578.09967058,"data":"  train | loss=0.0533 gsmape=0.1282 esmape=0.0667 ecorr=0.9905\n"}
+,{"stream_name":"stdout","time":5578.099676702,"data":"  val   | score=0.9034  NormGlobalSMAPE=0.8986 NormEpisodeCorr=0.9600 NormEpisodeSMAPE=0.8516  (raw: gsm=0.2027 esm=0.2968 ec=0.9201)  (best=0.9126)\n"}
+,{"stream_name":"stdout","time":5578.099681507,"data":"============================================================ \n"}
+,{"stream_name":"stdout","time":5578.09968581,"data":"STEP 6: evaluate the best epoch + test inference\n"}
+,{"stream_name":"stdout","time":5578.099689895,"data":" ============================================================\n"}
+,{"stream_name":"stdout","time":5589.925789893,"data":"  best epoch 4: val score 0.9126 (gsm 0.2075, esm 0.2478, ec 0.9308)\n"}
+,{"stream_name":"stdout","time":5589.925841982,"data":"  AFNO V4 reference: val 0.9110 -\u003e difference +0.0016\n"}
+,{"stream_name":"stdout","time":5623.814678096,"data":"  preds.npy written  range=[0.00,1616.71]  mean=36.732\n"}
+,{"stream_name":"stdout","time":5623.814710362,"data":"  summary.json written; status: complete\n"}
+,{"stream_name":"stdout","time":5623.814715426,"data":"variant afnov4_allskip finished\n"}
+,{"stream_name":"stdout","time":5623.814719569,"data":"============================================================ \n"}
+,{"stream_name":"stdout","time":5623.814723909,"data":"STEP 0: environment\n"}
+,{"stream_name":"stdout","time":5623.814728096,"data":" ============================================================\n"}
+,{"stream_name":"stdout","time":5623.814732173,"data":"GPU: Tesla T4  sm_75  15.6 GB  torch 2.11.0+cu130\n"}
+,{"stream_name":"stdout","time":5623.814736299,"data":"  data   : /kaggle/input/competitions/anrf-aise-hack-phase-2-theme-2-pollution-forecasting-iitd/aisehack-theme-2\n"}
+,{"stream_name":"stdout","time":5623.814740845,"data":"  V4 out : /kaggle/input/notebooks/imvetri0/afno-v4\n"}
+,{"stream_name":"stdout","time":5623.814744678,"data":"  resume : None\n"}
+,{"stream_name":"stdout","time":5623.814748631,"data":"============================================================ \n"}
+,{"stream_name":"stdout","time":5623.814752573,"data":"STEP 1: stats + episode masks (from the V4 output)\n"}
+,{"stream_name":"stdout","time":5623.814756194,"data":" ============================================================\n"}
+,{"stream_name":"stdout","time":5623.814759919,"data":"  stats from: /kaggle/input/notebooks/imvetri0/afno-v4/stats.npz\n"}
+,{"stream_name":"stdout","time":5626.572104581,"data":"  APRIL_16: T=715  ep_ratio=0.0208\n"}
+,{"stream_name":"stdout","time":5629.360526892,"data":"  JULY_16: T=739  ep_ratio=0.0197\n"}
+,{"stream_name":"stdout","time":5632.193102587,"data":"  OCT_16: T=739  ep_ratio=0.0170\n"}
+,{"stream_name":"stdout","time":5634.946332306,"data":"  DEC_16: T=739  ep_ratio=0.0217\n"}
+,{"stream_name":"stdout","time":5634.94636573,"data":"============================================================ \n"}
+,{"stream_name":"stdout","time":5634.9463712,"data":"STEP 2: datasets\n"}
+,{"stream_name":"stdout","time":5634.94637547,"data":" ============================================================\n"}
+,{"stream_name":"stdout","time":5635.496086752,"data":"  train: 2257 windows  ep_density mean=0.0201\n"}
+,{"stream_name":"stdout","time":5635.929559595,"data":"  val hour estimation: \u003c=1h 0.977\n"}
+,{"stream_name":"stdout","time":5635.92959112,"data":"  val: 214 windows  ep_density mean=0.0182\n"}
+,{"stream_name":"stdout","time":5636.079207231,"data":"  test start-hour histogram: [16, 0, 19, 0, 13, 7, 10, 10, 8, 10, 9, 8, 8, 12, 5, 15, 9, 9, 9, 6, 12, 7, 12, 4]\n"}
+,{"stream_name":"stdout","time":5636.079235625,"data":"============================================================ \n"}
+,{"stream_name":"stdout","time":5636.079240163,"data":"STEP 3: pipeline check (V4 checkpoint on this validation set)\n"}
+,{"stream_name":"stdout","time":5636.079244166,"data":" ============================================================\n"}
+,{"stream_name":"stdout","time":5648.302050139,"data":"  V4 seed-42 checkpoint: logged val 0.9110, re-evaluated here 0.9110 (diff -0.00000, tolerance 0.002)\n"}
+,{"stream_name":"stdout","time":5648.646418395,"data":"============================================================ \n"}
+,{"stream_name":"stdout","time":5648.646454138,"data":"STEP 4: build afnov4_nosparse\n"}
+,{"stream_name":"stdout","time":5648.646459502,"data":" ============================================================\n"}
+,{"stream_name":"stdout","time":5648.646463486,"data":"  afnov4_nosparse params: 6,980,033 (6.98M)\n"}
+,{"stream_name":"stdout","time":5648.646467287,"data":"  output (1, 16, 140, 124); at init it equals persistence (max diff 0.00e+00)\n"}
+,{"stream_name":"stdout","time":5649.527067785,"data":"  micro-batch 4: peak 6.51 GB of 15.6 GB -\u003e ok\n"}
+,{"stream_name":"stdout","time":5649.628360458,"data":"============================================================ \n"}
+,{"stream_name":"stdout","time":5649.628384463,"data":"STEP 5: train afnov4_nosparse_s42_phaseA\n"}
+,{"stream_name":"stdout","time":5649.628389413,"data":" ============================================================\n"}
+,{"stream_name":"stdout","time":5649.628393874,"data":"[afnov4_nosparse_s42_phaseA] 564 optimizer steps per epoch, micro-batch 4 x 1\n"}
+,{"stream_name":"stdout","time":5650.70555318,"data":"  [afnov4_nosparse_s42_phaseA E1 0/564] loss=0.2168 gsm=0.2810 esm=0.5133 ec=0.8845 lr=1.25e-05\n"}
+,{"stream_name":"stdout","time":5709.286442394,"data":"  [afnov4_nosparse_s42_phaseA E1 100/564] loss=0.2212 gsm=0.3197 esm=0.3940 ec=0.8572 lr=4.08e-05\n"}
+,{"stream_name":"stdout","time":5768.424601449,"data":"  [afnov4_nosparse_s42_phaseA E1 200/564] loss=0.1641 gsm=0.2638 esm=0.2872 ec=0.9045 lr=1.11e-04\n"}
+,{"stream_name":"stdout","time":5827.039578685,"data":"  [afnov4_nosparse_s42_phaseA E1 300/564] loss=0.2275 gsm=0.2614 esm=0.5201 ec=0.8191 lr=1.91e-04\n"}
+,{"stream_name":"stdout","time":5885.854376757,"data":"  [afnov4_nosparse_s42_phaseA E1 400/564] loss=0.1397 gsm=0.2637 esm=0.2144 ec=0.9673 lr=2.43e-04\n"}
+,{"stream_name":"stdout","time":5944.677986537,"data":"  [afnov4_nosparse_s42_phaseA E1 500/564] loss=0.1764 gsm=0.2682 esm=0.3443 ec=0.8922 lr=2.50e-04\n"}
+,{"stream_name":"stdout","time":5993.575633167,"data":"[afnov4_nosparse_s42_phaseA] E1/16 (344s, peak 6.6 GB, ~86 min left)\n"}
+,{"stream_name":"stdout","time":5993.57566887,"data":"  train | loss=0.1836 gsmape=0.2748 esmape=0.3447 ecorr=0.8883\n"}
+,{"stream_name":"stdout","time":5993.575677015,"data":"  val   | score=0.8983  NormGlobalSMAPE=0.8695 NormEpisodeCorr=0.9572 NormEpisodeSMAPE=0.8682  (raw: gsm=0.2609 esm=0.2636 ec=0.9144)  *BEST -\u003e saved*\n"}
+,{"stream_name":"stdout","time":5994.322096534,"data":"  [afnov4_nosparse_s42_phaseA E2 0/564] loss=0.1192 gsm=0.2029 esm=0.2401 ec=0.9602 lr=2.50e-04\n"}
+,{"stream_name":"stdout","time":6053.142455592,"data":"  [afnov4_nosparse_s42_phaseA E2 100/564] loss=0.1649 gsm=0.2548 esm=0.3169 ec=0.9277 lr=2.50e-04\n"}
+,{"stream_name":"stdout","time":6111.978755771,"data":"  [afnov4_nosparse_s42_phaseA E2 200/564] loss=0.1467 gsm=0.2631 esm=0.1917 ec=0.9353 lr=2.49e-04\n"}
+,{"stream_name":"stdout","time":6170.772117506,"data":"  [afnov4_nosparse_s42_phaseA E2 300/564] loss=0.1362 gsm=0.2168 esm=0.2968 ec=0.9445 lr=2.49e-04\n"}
+,{"stream_name":"stdout","time":6229.609497047,"data":"  [afnov4_nosparse_s42_phaseA E2 400/564] loss=0.1318 gsm=0.2385 esm=0.2098 ec=0.9421 lr=2.48e-04\n"}
+,{"stream_name":"stdout","time":6288.412842608,"data":"  [afnov4_nosparse_s42_phaseA E2 500/564] loss=0.1371 gsm=0.2304 esm=0.2804 ec=0.9646 lr=2.47e-04\n"}
+,{"stream_name":"stdout","time":6337.338285486,"data":"[afnov4_nosparse_s42_phaseA] E2/16 (344s, peak 6.6 GB, ~80 min left)\n"}
+,{"stream_name":"stdout","time":6337.338324489,"data":"  train | loss=0.1362 gsmape=0.2392 esmape=0.2259 ecorr=0.9405\n"}
+,{"stream_name":"stdout","time":6337.338331239,"data":"  val   | score=0.9072  NormGlobalSMAPE=0.8826 NormEpisodeCorr=0.9615 NormEpisodeSMAPE=0.8774  (raw: gsm=0.2348 esm=0.2453 ec=0.9230)  *BEST -\u003e saved*\n"}
+,{"stream_name":"stdout","time":6338.085795349,"data":"  [afnov4_nosparse_s42_phaseA E3 0/564] loss=0.1275 gsm=0.2121 esm=0.2116 ec=0.9400 lr=2.46e-04\n"}
+,{"stream_name":"stdout","time":6396.939726687,"data":"  [afnov4_nosparse_s42_phaseA E3 100/564] loss=0.1268 gsm=0.2147 esm=0.2523 ec=0.9608 lr=2.45e-04\n"}
+,{"stream_name":"stdout","time":6455.774819663,"data":"  [afnov4_nosparse_s42_phaseA E3 200/564] loss=0.1217 gsm=0.2052 esm=0.2377 ec=0.9547 lr=2.44e-04\n"}
+,{"stream_name":"stdout","time":6514.595195972,"data":"  [afnov4_nosparse_s42_phaseA E3 300/564] loss=0.1030 gsm=0.1974 esm=0.1713 ec=0.9683 lr=2.42e-04\n"}
+,{"stream_name":"stdout","time":6573.399364795,"data":"  [afnov4_nosparse_s42_phaseA E3 400/564] loss=0.1107 gsm=0.2205 esm=0.1542 ec=0.9657 lr=2.40e-04\n"}
+,{"stream_name":"stdout","time":6632.226727296,"data":"  [afnov4_nosparse_s42_phaseA E3 500/564] loss=0.1078 gsm=0.2119 esm=0.1579 ec=0.9732 lr=2.39e-04\n"}
+,{"stream_name":"stdout","time":6681.134145923,"data":"[afnov4_nosparse_s42_phaseA] E3/16 (344s, peak 6.6 GB, ~74 min left)\n"}
+,{"stream_name":"stdout","time":6681.134209026,"data":"  train | loss=0.1158 gsmape=0.2154 esmape=0.1848 ecorr=0.9563\n"}
+,{"stream_name":"stdout","time":6681.134217585,"data":"  val   | score=0.9098  NormGlobalSMAPE=0.8899 NormEpisodeCorr=0.9620 NormEpisodeSMAPE=0.8774  (raw: gsm=0.2201 esm=0.2451 ec=0.9241)  *BEST -\u003e saved*\n"}
+,{"stream_name":"stdout","time":6681.860957364,"data":"  [afnov4_nosparse_s42_phaseA E4 0/564] loss=0.1034 gsm=0.2029 esm=0.1675 ec=0.9672 lr=2.37e-04\n"}
+,{"stream_name":"stdout","time":6740.68792401,"data":"  [afnov4_nosparse_s42_phaseA E4 100/564] loss=0.1042 gsm=0.2072 esm=0.1464 ec=0.9681 lr=2.35e-04\n"}
+,{"stream_name":"stdout","time":6799.552916414,"data":"  [afnov4_nosparse_s42_phaseA E4 200/564] loss=0.1134 gsm=0.2118 esm=0.1790 ec=0.9590 lr=2.33e-04\n"}
+,{"stream_name":"stdout","time":6858.458040658,"data":"  [afnov4_nosparse_s42_phaseA E4 300/564] loss=0.0976 gsm=0.2104 esm=0.1194 ec=0.9791 lr=2.31e-04\n"}
+,{"stream_name":"stdout","time":6917.47071281,"data":"  [afnov4_nosparse_s42_phaseA E4 400/564] loss=0.0933 gsm=0.1885 esm=0.1464 ec=0.9768 lr=2.28e-04\n"}
+,{"stream_name":"stdout","time":6976.435234376,"data":"  [afnov4_nosparse_s42_phaseA E4 500/564] loss=0.0998 gsm=0.2019 esm=0.1447 ec=0.9700 lr=2.25e-04\n"}
+,{"stream_name":"stdout","time":7025.486062514,"data":"[afnov4_nosparse_s42_phaseA] E4/16 (344s, peak 6.6 GB, ~69 min left)\n"}
+,{"stream_name":"stdout","time":7025.48609506,"data":"  train | loss=0.1018 gsmape=0.1984 esmape=0.1573 ecorr=0.9660\n"}
+,{"stream_name":"stdout","time":7025.486101473,"data":"  val   | score=0.9109  NormGlobalSMAPE=0.8942 NormEpisodeCorr=0.9628 NormEpisodeSMAPE=0.8758  (raw: gsm=0.2116 esm=0.2483 ec=0.9255)  *BEST -\u003e saved*\n"}
+,{"stream_name":"stdout","time":7026.231823889,"data":"  [afnov4_nosparse_s42_phaseA E5 0/564] loss=0.1026 gsm=0.2076 esm=0.1400 ec=0.9758 lr=2.24e-04\n"}
+,{"stream_name":"stdout","time":7085.330842313,"data":"  [afnov4_nosparse_s42_phaseA E5 100/564] loss=0.0898 gsm=0.1954 esm=0.0995 ec=0.9698 lr=2.21e-04\n"}
+,{"stream_name":"stdout","time":7144.45597841,"data":"  [afnov4_nosparse_s42_phaseA E5 200/564] loss=0.0898 gsm=0.1836 esm=0.1506 ec=0.9775 lr=2.18e-04\n"}
+,{"stream_name":"stdout","time":7203.498846174,"data":"  [afnov4_nosparse_s42_phaseA E5 300/564] loss=0.0837 gsm=0.1720 esm=0.1251 ec=0.9731 lr=2.15e-04\n"}
+,{"stream_name":"stdout","time":7262.42681816,"data":"  [afnov4_nosparse_s42_phaseA E5 400/564] loss=0.0871 gsm=0.1854 esm=0.1118 ec=0.9823 lr=2.11e-04\n"}
+,{"stream_name":"stdout","time":7321.413240503,"data":"  [afnov4_nosparse_s42_phaseA E5 500/564] loss=0.0844 gsm=0.1738 esm=0.1220 ec=0.9743 lr=2.08e-04\n"}
+,{"stream_name":"stdout","time":7370.325034375,"data":"[afnov4_nosparse_s42_phaseA] E5/16 (345s, peak 6.6 GB, ~63 min left)\n"}
+,{"stream_name":"stdout","time":7370.32507406,"data":"  train | loss=0.0903 gsmape=0.1842 esmape=0.1334 ecorr=0.9726\n"}
+,{"stream_name":"stdout","time":7370.325080721,"data":"  val   | score=0.9108  NormGlobalSMAPE=0.8970 NormEpisodeCorr=0.9627 NormEpisodeSMAPE=0.8727  (raw: gsm=0.2060 esm=0.2545 ec=0.9255)  (best=0.9109)\n"}
+,{"stream_name":"stdout","time":7371.050521104,"data":"  [afnov4_nosparse_s42_phaseA E6 0/564] loss=0.0855 gsm=0.1791 esm=0.1181 ec=0.9707 lr=2.06e-04\n"}
+,{"stream_name":"stdout","time":7429.993677373,"data":"  [afnov4_nosparse_s42_phaseA E6 100/564] loss=0.0752 gsm=0.1708 esm=0.0919 ec=0.9809 lr=2.02e-04\n"}
+,{"stream_name":"stdout","time":7489.038833101,"data":"  [afnov4_nosparse_s42_phaseA E6 200/564] loss=0.0877 gsm=0.1891 esm=0.1107 ec=0.9831 lr=1.99e-04\n"}
+,{"stream_name":"stdout","time":7548.042759106,"data":"  [afnov4_nosparse_s42_phaseA E6 300/564] loss=0.0775 gsm=0.1629 esm=0.1336 ec=0.9797 lr=1.95e-04\n"}
+,{"stream_name":"stdout","time":7607.057103089,"data":"  [afnov4_nosparse_s42_phaseA E6 400/564] loss=0.0772 gsm=0.1719 esm=0.1146 ec=0.9869 lr=1.91e-04\n"}
+,{"stream_name":"stdout","time":7666.111508237,"data":"  [afnov4_nosparse_s42_phaseA E6 500/564] loss=0.0808 gsm=0.1640 esm=0.1349 ec=0.9759 lr=1.87e-04\n"}
+,{"stream_name":"stdout","time":7715.117316541,"data":"[afnov4_nosparse_s42_phaseA] E6/16 (345s, peak 6.6 GB, ~57 min left)\n"}
+,{"stream_name":"stdout","time":7715.117380296,"data":"  train | loss=0.0824 gsmape=0.1733 esmape=0.1191 ecorr=0.9771\n"}
+,{"stream_name":"stdout","time":7715.117388119,"data":"  val   | score=0.9098  NormGlobalSMAPE=0.8982 NormEpisodeCorr=0.9624 NormEpisodeSMAPE=0.8687  (raw: gsm=0.2035 esm=0.2626 ec=0.9248)  (best=0.9109)\n"}
+,{"stream_name":"stdout","time":7715.843014134,"data":"  [afnov4_nosparse_s42_phaseA E7 0/564] loss=0.0726 gsm=0.1598 esm=0.1026 ec=0.9802 lr=1.84e-04\n"}
+,{"stream_name":"stdout","time":7775.101471675,"data":"  [afnov4_nosparse_s42_phaseA E7 100/564] loss=0.0761 gsm=0.1580 esm=0.1285 ec=0.9829 lr=1.80e-04\n"}
+,{"stream_name":"stdout","time":7833.997368405,"data":"  [afnov4_nosparse_s42_phaseA E7 200/564] loss=0.0745 gsm=0.1645 esm=0.1036 ec=0.9786 lr=1.76e-04\n"}
+,{"stream_name":"stdout","time":7892.891173688,"data":"  [afnov4_nosparse_s42_phaseA E7 300/564] loss=0.0794 gsm=0.1720 esm=0.1067 ec=0.9730 lr=1.72e-04\n"}
+,{"stream_name":"stdout","time":7952.005004142,"data":"  [afnov4_nosparse_s42_phaseA E7 400/564] loss=0.0720 gsm=0.1544 esm=0.1065 ec=0.9771 lr=1.68e-04\n"}
+,{"stream_name":"stdout","time":8011.159617775,"data":"  [afnov4_nosparse_s42_phaseA E7 500/564] loss=0.0680 gsm=0.1520 esm=0.0841 ec=0.9818 lr=1.63e-04\n"}
+,{"stream_name":"stdout","time":8060.229795962,"data":"[afnov4_nosparse_s42_phaseA] E7/16 (345s, peak 6.6 GB, ~52 min left)\n"}
+,{"stream_name":"stdout","time":8060.22983543,"data":"  train | loss=0.0756 gsmape=0.1633 esmape=0.1072 ecorr=0.9803\n"}
+,{"stream_name":"stdout","time":8060.229842175,"data":"  val   | score=0.9086  NormGlobalSMAPE=0.8988 NormEpisodeCorr=0.9619 NormEpisodeSMAPE=0.8651  (raw: gsm=0.2025 esm=0.2698 ec=0.9237)  (best=0.9109)\n"}
+,{"stream_name":"stdout","time":8061.006295791,"data":"  [afnov4_nosparse_s42_phaseA E8 0/564] loss=0.0765 gsm=0.1638 esm=0.1046 ec=0.9775 lr=1.61e-04\n"}
+,{"stream_name":"stdout","time":8120.250222837,"data":"  [afnov4_nosparse_s42_phaseA E8 100/564] loss=0.0728 gsm=0.1546 esm=0.1168 ec=0.9795 lr=1.56e-04\n"}
+,{"stream_name":"stdout","time":8179.525806874,"data":"  [afnov4_nosparse_s42_phaseA E8 200/564] loss=0.0700 gsm=0.1488 esm=0.1077 ec=0.9833 lr=1.52e-04\n"}
+,{"stream_name":"stdout","time":8238.747176368,"data":"  [afnov4_nosparse_s42_phaseA E8 300/564] loss=0.0697 gsm=0.1570 esm=0.1025 ec=0.9858 lr=1.47e-04\n"}
+,{"stream_name":"stdout","time":8297.963057354,"data":"  [afnov4_nosparse_s42_phaseA E8 400/564] loss=0.0676 gsm=0.1580 esm=0.0872 ec=0.9884 lr=1.43e-04\n"}
+,{"stream_name":"stdout","time":8357.192479639,"data":"  [afnov4_nosparse_s42_phaseA E8 500/564] loss=0.0671 gsm=0.1507 esm=0.0850 ec=0.9803 lr=1.38e-04\n"}
+,{"stream_name":"stdout","time":8406.296652947,"data":"[afnov4_nosparse_s42_phaseA] E8/16 (346s, peak 6.6 GB, ~46 min left)\n"}
+,{"stream_name":"stdout","time":8406.296684887,"data":"  train | loss=0.0705 gsmape=0.1554 esmape=0.0993 ecorr=0.9830\n"}
+,{"stream_name":"stdout","time":8406.296690807,"data":"  val   | score=0.9073  NormGlobalSMAPE=0.8989 NormEpisodeCorr=0.9614 NormEpisodeSMAPE=0.8617  (raw: gsm=0.2022 esm=0.2767 ec=0.9228)  (best=0.9109)\n"}
+,{"stream_name":"stdout","time":8407.076354122,"data":"  [afnov4_nosparse_s42_phaseA E9 0/564] loss=0.0713 gsm=0.1512 esm=0.1004 ec=0.9806 lr=1.35e-04\n"}
+,{"stream_name":"stdout","time":8466.285960891,"data":"  [afnov4_nosparse_s42_phaseA E9 100/564] loss=0.0572 gsm=0.1363 esm=0.0713 ec=0.9860 lr=1.31e-04\n"}
+,{"stream_name":"stdout","time":8525.519265036,"data":"  [afnov4_nosparse_s42_phaseA E9 200/564] loss=0.0718 gsm=0.1564 esm=0.1184 ec=0.9863 lr=1.26e-04\n"}
+,{"stream_name":"stdout","time":8584.774887378,"data":"  [afnov4_nosparse_s42_phaseA E9 300/564] loss=0.0653 gsm=0.1540 esm=0.0772 ec=0.9843 lr=1.22e-04\n"}
+,{"stream_name":"stdout","time":8643.966933918,"data":"  [afnov4_nosparse_s42_phaseA E9 400/564] loss=0.0672 gsm=0.1479 esm=0.0976 ec=0.9766 lr=1.17e-04\n"}
+,{"stream_name":"stdout","time":8703.023452598,"data":"  [afnov4_nosparse_s42_phaseA E9 500/564] loss=0.0658 gsm=0.1548 esm=0.0810 ec=0.9872 lr=1.12e-04\n"}
+,{"stream_name":"stdout","time":8751.983398703,"data":"[afnov4_nosparse_s42_phaseA] E9/16 (346s, peak 6.6 GB, ~40 min left)\n"}
+,{"stream_name":"stdout","time":8751.98343591,"data":"  train | loss=0.0656 gsmape=0.1481 esmape=0.0896 ecorr=0.9851\n"}
+,{"stream_name":"stdout","time":8751.983442604,"data":"  val   | score=0.9061  NormGlobalSMAPE=0.8988 NormEpisodeCorr=0.9609 NormEpisodeSMAPE=0.8586  (raw: gsm=0.2024 esm=0.2828 ec=0.9218)  (best=0.9109)\n"}
+,{"stream_name":"stdout","time":8752.75014548,"data":"  [afnov4_nosparse_s42_phaseA E10 0/564] loss=0.0666 gsm=0.1511 esm=0.0906 ec=0.9851 lr=1.09e-04\n"}
+,{"stream_name":"stdout","time":8811.750775064,"data":"  [afnov4_nosparse_s42_phaseA E10 100/564] loss=0.0612 gsm=0.1466 esm=0.0786 ec=0.9862 lr=1.05e-04\n"}
+,{"stream_name":"stdout","time":8870.906659542,"data":"  [afnov4_nosparse_s42_phaseA E10 200/564] loss=0.0674 gsm=0.1483 esm=0.1018 ec=0.9803 lr=1.00e-04\n"}
+,{"stream_name":"stdout","time":8930.142480531,"data":"  [afnov4_nosparse_s42_phaseA E10 300/564] loss=0.0617 gsm=0.1384 esm=0.0858 ec=0.9870 lr=9.60e-05\n"}
+,{"stream_name":"stdout","time":8989.359769289,"data":"  [afnov4_nosparse_s42_phaseA E10 400/564] loss=0.0624 gsm=0.1490 esm=0.0709 ec=0.9836 lr=9.15e-05\n"}
+,{"stream_name":"stdout","time":9048.570252498,"data":"  [afnov4_nosparse_s42_phaseA E10 500/564] loss=0.0579 gsm=0.1345 esm=0.0838 ec=0.9895 lr=8.71e-05\n"}
+,{"stream_name":"stdout","time":9097.633115257,"data":"[afnov4_nosparse_s42_phaseA] E10/16 (346s, peak 6.6 GB, ~34 min left)\n"}
+,{"stream_name":"stdout","time":9097.633167485,"data":"  train | loss=0.0624 gsmape=0.1428 esmape=0.0844 ecorr=0.9866\n"}
+,{"stream_name":"stdout","time":9097.633175836,"data":"  val   | score=0.9050  NormGlobalSMAPE=0.8986 NormEpisodeCorr=0.9605 NormEpisodeSMAPE=0.8560  (raw: gsm=0.2028 esm=0.2880 ec=0.9211)  (best=0.9109)\n"}
+,{"stream_name":"stdout","time":9098.351709719,"data":"  [afnov4_nosparse_s42_phaseA E11 0/564] loss=0.0583 gsm=0.1280 esm=0.0975 ec=0.9883 lr=8.44e-05\n"}
+,{"stream_name":"stdout","time":9157.546013612,"data":"  [afnov4_nosparse_s42_phaseA E11 100/564] loss=0.0646 gsm=0.1467 esm=0.0827 ec=0.9912 lr=8.01e-05\n"}
+,{"stream_name":"stdout","time":9216.792803019,"data":"  [afnov4_nosparse_s42_phaseA E11 200/564] loss=0.0655 gsm=0.1493 esm=0.0806 ec=0.9878 lr=7.58e-05\n"}
+,{"stream_name":"stdout","time":9276.047226171,"data":"  [afnov4_nosparse_s42_phaseA E11 300/564] loss=0.0603 gsm=0.1380 esm=0.0864 ec=0.9888 lr=7.16e-05\n"}
+,{"stream_name":"stdout","time":9335.380239145,"data":"  [afnov4_nosparse_s42_phaseA E11 400/564] loss=0.0597 gsm=0.1316 esm=0.0826 ec=0.9876 lr=6.75e-05\n"}
+,{"stream_name":"stdout","time":9394.725828304,"data":"  [afnov4_nosparse_s42_phaseA E11 500/564] loss=0.0585 gsm=0.1394 esm=0.0723 ec=0.9892 lr=6.35e-05\n"}
+,{"stream_name":"stdout","time":9443.864094775,"data":"[afnov4_nosparse_s42_phaseA] E11/16 (346s, peak 6.6 GB, ~29 min left)\n"}
+,{"stream_name":"stdout","time":9443.864130095,"data":"  train | loss=0.0594 gsmape=0.1381 esmape=0.0786 ecorr=0.9879\n"}
+,{"stream_name":"stdout","time":9443.864136476,"data":"  val   | score=0.9041  NormGlobalSMAPE=0.8983 NormEpisodeCorr=0.9602 NormEpisodeSMAPE=0.8538  (raw: gsm=0.2035 esm=0.2923 ec=0.9203)  (best=0.9109)\n"}
+,{"stream_name":"stdout","time":9444.644973951,"data":"  [afnov4_nosparse_s42_phaseA E12 0/564] loss=0.0578 gsm=0.1351 esm=0.0747 ec=0.9916 lr=6.10e-05\n"}
+,{"stream_name":"stdout","time":9503.976472651,"data":"  [afnov4_nosparse_s42_phaseA E12 100/564] loss=0.0574 gsm=0.1355 esm=0.0706 ec=0.9882 lr=5.71e-05\n"}
+,{"stream_name":"stdout","time":9563.352894208,"data":"  [afnov4_nosparse_s42_phaseA E12 200/564] loss=0.0638 gsm=0.1543 esm=0.0712 ec=0.9876 lr=5.33e-05\n"}
+,{"stream_name":"stdout","time":9622.697011459,"data":"  [afnov4_nosparse_s42_phaseA E12 300/564] loss=0.0541 gsm=0.1276 esm=0.0765 ec=0.9905 lr=4.96e-05\n"}
+,{"stream_name":"stdout","time":9682.068145491,"data":"  [afnov4_nosparse_s42_phaseA E12 400/564] loss=0.0602 gsm=0.1401 esm=0.0715 ec=0.9902 lr=4.60e-05\n"}
+,{"stream_name":"stdout","time":9741.365326033,"data":"  [afnov4_nosparse_s42_phaseA E12 500/564] loss=0.0593 gsm=0.1340 esm=0.0905 ec=0.9881 lr=4.25e-05\n"}
+,{"stream_name":"stdout","time":9790.42351947,"data":"[afnov4_nosparse_s42_phaseA] E12/16 (347s, peak 6.6 GB, ~23 min left)\n"}
+,{"stream_name":"stdout","time":9790.423582315,"data":"  train | loss=0.0572 gsmape=0.1345 esmape=0.0747 ecorr=0.9888\n"}
+,{"stream_name":"stdout","time":9790.423591337,"data":"  val   | score=0.9033  NormGlobalSMAPE=0.8980 NormEpisodeCorr=0.9597 NormEpisodeSMAPE=0.8521  (raw: gsm=0.2040 esm=0.2959 ec=0.9194)  (best=0.9109)\n"}
+,{"stream_name":"stdout","time":9791.19047152,"data":"  [afnov4_nosparse_s42_phaseA E13 0/564] loss=0.0563 gsm=0.1301 esm=0.0797 ec=0.9882 lr=4.03e-05\n"}
+,{"stream_name":"stdout","time":9850.394734731,"data":"  [afnov4_nosparse_s42_phaseA E13 100/564] loss=0.0491 gsm=0.1163 esm=0.0658 ec=0.9900 lr=3.70e-05\n"}
+,{"stream_name":"stdout","time":9909.592650072,"data":"  [afnov4_nosparse_s42_phaseA E13 200/564] loss=0.0592 gsm=0.1386 esm=0.0784 ec=0.9921 lr=3.38e-05\n"}
+,{"stream_name":"stdout","time":9968.817527418,"data":"  [afnov4_nosparse_s42_phaseA E13 300/564] loss=0.0563 gsm=0.1295 esm=0.0815 ec=0.9884 lr=3.08e-05\n"}
+,{"stream_name":"stdout","time":10027.972679122,"data":"  [afnov4_nosparse_s42_phaseA E13 400/564] loss=0.0495 gsm=0.1193 esm=0.0704 ec=0.9919 lr=2.78e-05\n"}
+,{"stream_name":"stdout","time":10087.12719991,"data":"  [afnov4_nosparse_s42_phaseA E13 500/564] loss=0.0514 gsm=0.1209 esm=0.0659 ec=0.9894 lr=2.50e-05\n"}
+,{"stream_name":"stdout","time":10136.168129913,"data":"[afnov4_nosparse_s42_phaseA] E13/16 (346s, peak 6.6 GB, ~17 min left)\n"}
+,{"stream_name":"stdout","time":10136.168184379,"data":"  train | loss=0.0557 gsmape=0.1321 esmape=0.0717 ecorr=0.9894\n"}
+,{"stream_name":"stdout","time":10136.168190376,"data":"  val   | score=0.9026  NormGlobalSMAPE=0.8978 NormEpisodeCorr=0.9593 NormEpisodeSMAPE=0.8507  (raw: gsm=0.2045 esm=0.2985 ec=0.9186)  (best=0.9109)\n"}
+,{"stream_name":"stdout","time":10136.885355054,"data":"  [afnov4_nosparse_s42_phaseA E14 0/564] loss=0.0594 gsm=0.1371 esm=0.0888 ec=0.9879 lr=2.33e-05\n"}
+,{"stream_name":"stdout","time":10196.073306199,"data":"  [afnov4_nosparse_s42_phaseA E14 100/564] loss=0.0567 gsm=0.1383 esm=0.0698 ec=0.9916 lr=2.07e-05\n"}
+,{"stream_name":"stdout","time":10255.316531358,"data":"  [afnov4_nosparse_s42_phaseA E14 200/564] loss=0.0565 gsm=0.1363 esm=0.0702 ec=0.9914 lr=1.82e-05\n"}
+,{"stream_name":"stdout","time":10314.752872874,"data":"  [afnov4_nosparse_s42_phaseA E14 300/564] loss=0.0566 gsm=0.1317 esm=0.0758 ec=0.9901 lr=1.59e-05\n"}
+,{"stream_name":"stdout","time":10374.191075513,"data":"  [afnov4_nosparse_s42_phaseA E14 400/564] loss=0.0557 gsm=0.1309 esm=0.0694 ec=0.9897 lr=1.38e-05\n"}
+,{"stream_name":"stdout","time":10433.693060591,"data":"  [afnov4_nosparse_s42_phaseA E14 500/564] loss=0.0566 gsm=0.1361 esm=0.0672 ec=0.9908 lr=1.18e-05\n"}
+,{"stream_name":"stdout","time":10483.052158447,"data":"[afnov4_nosparse_s42_phaseA] E14/16 (347s, peak 6.6 GB, ~12 min left)\n"}
+,{"stream_name":"stdout","time":10483.052208219,"data":"  train | loss=0.0547 gsmape=0.1304 esmape=0.0697 ecorr=0.9898\n"}
+,{"stream_name":"stdout","time":10483.05221513,"data":"  val   | score=0.9021  NormGlobalSMAPE=0.8975 NormEpisodeCorr=0.9590 NormEpisodeSMAPE=0.8497  (raw: gsm=0.2050 esm=0.3006 ec=0.9180)  (best=0.9109)\n"}
+,{"stream_name":"stdout","time":10483.875282671,"data":"  [afnov4_nosparse_s42_phaseA E15 0/564] loss=0.0551 gsm=0.1350 esm=0.0663 ec=0.9864 lr=1.06e-05\n"}
+,{"stream_name":"stdout","time":10543.272045225,"data":"  [afnov4_nosparse_s42_phaseA E15 100/564] loss=0.0515 gsm=0.1162 esm=0.0805 ec=0.9899 lr=8.79e-06\n"}
+,{"stream_name":"stdout","time":10602.767664729,"data":"  [afnov4_nosparse_s42_phaseA E15 200/564] loss=0.0524 gsm=0.1257 esm=0.0639 ec=0.9882 lr=7.19e-06\n"}
+,{"stream_name":"stdout","time":10662.315116706,"data":"  [afnov4_nosparse_s42_phaseA E15 300/564] loss=0.0533 gsm=0.1304 esm=0.0718 ec=0.9913 lr=5.74e-06\n"}
+,{"stream_name":"stdout","time":10721.854357615,"data":"  [afnov4_nosparse_s42_phaseA E15 400/564] loss=0.0543 gsm=0.1290 esm=0.0715 ec=0.9908 lr=4.46e-06\n"}
+,{"stream_name":"stdout","time":10781.29607937,"data":"  [afnov4_nosparse_s42_phaseA E15 500/564] loss=0.0534 gsm=0.1315 esm=0.0666 ec=0.9881 lr=3.34e-06\n"}
+,{"stream_name":"stdout","time":10830.458683515,"data":"[afnov4_nosparse_s42_phaseA] E15/16 (347s, peak 6.6 GB, ~6 min left)\n"}
+,{"stream_name":"stdout","time":10830.458719668,"data":"  train | loss=0.0541 gsmape=0.1296 esmape=0.0686 ecorr=0.9901\n"}
+,{"stream_name":"stdout","time":10830.458735309,"data":"  val   | score=0.9017  NormGlobalSMAPE=0.8974 NormEpisodeCorr=0.9588 NormEpisodeSMAPE=0.8490  (raw: gsm=0.2052 esm=0.3020 ec=0.9176)  (best=0.9109)\n"}
+,{"stream_name":"stdout","time":10831.253860915,"data":"  [afnov4_nosparse_s42_phaseA E16 0/564] loss=0.0548 gsm=0.1283 esm=0.0763 ec=0.9917 lr=2.70e-06\n"}
+,{"stream_name":"stdout","time":10890.728252255,"data":"  [afnov4_nosparse_s42_phaseA E16 100/564] loss=0.0536 gsm=0.1299 esm=0.0608 ec=0.9883 lr=1.85e-06\n"}
+,{"stream_name":"stdout","time":10950.165230166,"data":"  [afnov4_nosparse_s42_phaseA E16 200/564] loss=0.0488 gsm=0.1195 esm=0.0664 ec=0.9920 lr=1.16e-06\n"}
+,{"stream_name":"stdout","time":11009.490870154,"data":"  [afnov4_nosparse_s42_phaseA E16 300/564] loss=0.0508 gsm=0.1227 esm=0.0714 ec=0.9928 lr=6.38e-07\n"}
+,{"stream_name":"stdout","time":11068.769301627,"data":"  [afnov4_nosparse_s42_phaseA E16 400/564] loss=0.0551 gsm=0.1334 esm=0.0716 ec=0.9905 lr=2.83e-07\n"}
+,{"stream_name":"stdout","time":11128.047851207,"data":"  [afnov4_nosparse_s42_phaseA E16 500/564] loss=0.0544 gsm=0.1363 esm=0.0618 ec=0.9910 lr=9.48e-08\n"}
+,{"stream_name":"stdout","time":11177.189407939,"data":"[afnov4_nosparse_s42_phaseA] E16/16 (347s, peak 6.6 GB, ~0 min left)\n"}
+,{"stream_name":"stdout","time":11177.189451969,"data":"  train | loss=0.0539 gsmape=0.1292 esmape=0.0682 ecorr=0.9902\n"}
+,{"stream_name":"stdout","time":11177.189457913,"data":"  val   | score=0.9015  NormGlobalSMAPE=0.8973 NormEpisodeCorr=0.9587 NormEpisodeSMAPE=0.8485  (raw: gsm=0.2054 esm=0.3030 ec=0.9174)  (best=0.9109)\n"}
+,{"stream_name":"stdout","time":11177.18946797,"data":"============================================================ \n"}
+,{"stream_name":"stdout","time":11177.189472468,"data":"STEP 6: evaluate the best epoch + test inference\n"}
+,{"stream_name":"stdout","time":11177.189476689,"data":" ============================================================\n"}
+,{"stream_name":"stdout","time":11188.990687472,"data":"  best epoch 4: val score 0.9109 (gsm 0.2116, esm 0.2483, ec 0.9255)\n"}
+,{"stream_name":"stdout","time":11188.990725254,"data":"  AFNO V4 reference: val 0.9110 -\u003e difference -0.0001\n"}
+,{"stream_name":"stdout","time":11209.587333633,"data":"  preds.npy written  range=[0.00,1578.46]  mean=36.985\n"}
+,{"stream_name":"stdout","time":11209.58736664,"data":"  summary.json written; status: complete\n"}
+,{"stream_name":"stdout","time":11209.587372725,"data":"variant afnov4_nosparse finished\n"}
+,{"stream_name":"stderr","time":11215.175451845,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":11215.175483879,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":11215.359124768,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":11215.359150637,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":11216.270216434,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":11216.383865477,"data":"[NbConvertApp] Writing 122247 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":11219.133589426,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":11220.035455054,"data":"[NbConvertApp] Writing 697774 bytes to __results__.html\n"}
+]
