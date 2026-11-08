@@ -1256,3 +1256,536 @@ class PatchAFNO(nn.Module):
 
 BACKBONES['patchafno'] = lambda: PatchAFNO(C.C_IN)
 
+# %% [markdown]
+# ## 5. Loss and the exact competition metric (V4, unchanged)
+#
+# Training loss: Huber in log1p space + global SMAPE + episode SMAPE +
+# (1 - episode Pearson), with horizon weights 0.7 -> 1.3. The validation
+# metric is the competition score with equal weights; `evaluate` also reports
+# each term per forecast hour.
+
+# %%
+EPS = 1e-8
+
+def horizon_weights(device):
+    w = torch.linspace(C.HW_MIN, C.HW_MAX, C.T_OUT, device=device)
+    return w / w.mean()
+
+
+def _masked_corr(pred, tgt, mask, min_pts=8):
+    B, T = pred.shape[:2]
+    p = pred.reshape(B, T, -1)
+    y = tgt.reshape(B, T, -1)
+    m = mask.reshape(B, T, -1)
+    n = m.sum(-1)
+    valid = n >= min_pts
+    n = n.clamp(min=1)
+    mp = (p * m).sum(-1) / n
+    my = (y * m).sum(-1) / n
+    pc = (p - mp[..., None]) * m
+    yc = (y - my[..., None]) * m
+    cov = (pc * yc).sum(-1)
+    vp = (pc ** 2).sum(-1)
+    vy = (yc ** 2).sum(-1)
+    corr = cov / torch.sqrt(vp.clamp(min=1e-4) * vy.clamp(min=1e-4))
+    return corr, valid
+
+
+class CompositeLoss(nn.Module):
+    def __init__(self, w, ep_wt):
+        super().__init__()
+        self.w = w
+        self.ep_wt = ep_wt
+        self.hw = None
+
+    def forward(self, pred_log, t_log, t_raw, mask):
+        if self.hw is None or self.hw.device != pred_log.device:
+            self.hw = horizon_weights(pred_log.device)
+        hw = self.hw[None, :, None, None]
+        pred_raw = F.relu(torch.expm1(pred_log.clamp(max=13.0)))
+        wpx = (1.0 + (self.ep_wt - 1.0) * mask) * hw
+        hub = F.smooth_l1_loss(pred_log, t_log, beta=1.0, reduction='none')
+        L_h = (hub * wpx).mean()
+        sm = (pred_raw - t_raw).abs() / (0.5 * (pred_raw.abs() + t_raw.abs()) + 0.1)
+        L_g = (sm * hw).mean()
+        L_es = (sm * mask).sum() / (mask.sum() + EPS)
+        corr, valid = _masked_corr(pred_raw, t_raw, mask)
+        L_ec = 1.0 - (corr * valid).sum() / (valid.sum() + EPS)
+        loss = (self.w['huber'] * L_h + self.w['gsmape'] * L_g
+                + self.w['esmape'] * L_es + self.w['ecorr'] * L_ec)
+        with torch.no_grad():
+            mets = dict(gsmape=sm.mean().item(), esmape=L_es.item(),
+                        ecorr=1.0 - L_ec.item())
+        return loss, mets
+
+
+@torch.no_grad()
+def comp_metric_batch(pred_raw, t_raw, mask, acc):
+    sm = (pred_raw - t_raw).abs() / (0.5 * (pred_raw.abs() + t_raw.abs()) + EPS)
+    acc['gsmape'].append(sm.mean(dim=(2, 3)).reshape(-1).cpu())
+    m = mask
+    n = m.sum(dim=(2, 3))
+    es = (sm * m).sum(dim=(2, 3)) / n.clamp(min=1)
+    has = n > 0
+    acc['esmape'].append(es[has].reshape(-1).cpu())
+    corr, valid = _masked_corr(pred_raw, t_raw, m, min_pts=3)
+    acc['ecorr'].append(corr[valid].reshape(-1).cpu())
+
+
+def comp_metric_final(acc):
+    g = torch.cat(acc['gsmape']).mean().item()
+    e = torch.cat(acc['esmape']).mean().item() if acc['esmape'] else 2.0
+    c = torch.cat(acc['ecorr']).mean().item() if acc['ecorr'] else 0.0
+    ng, nc, ne = 1 - g / 2, (c + 1) / 2, 1 - e / 2
+    return dict(gsmape=g, esmape=e, ecorr=c,
+                norm_gsmape=ng, norm_ecorr=nc, norm_esmape=ne,
+                score=(ng + nc + ne) / 3)
+
+
+@torch.no_grad()
+def evaluate(model, loader):
+    """Same score as validate(), plus each metric term per forecast hour."""
+    model.eval()
+    acc = defaultdict(list)
+    g_t, e_t, c_t = [], [], []
+    for x, t_log, t_raw, last_log, mask in loader:
+        x, last_log = x.to(DEVICE), last_log.to(DEVICE)
+        t_raw, mask = t_raw.to(DEVICE), mask.to(DEVICE)
+        with torch.autocast('cuda', enabled=DEVICE.type == 'cuda'):
+            pred_log = model(x, last_log)
+        pred_raw = F.relu(torch.expm1(pred_log.float().clamp(max=13.0)))
+        comp_metric_batch(pred_raw, t_raw, mask, acc)
+        sm = (pred_raw - t_raw).abs() / (0.5 * (pred_raw.abs() + t_raw.abs()) + EPS)
+        n = mask.sum(dim=(2, 3))
+        e = (sm * mask).sum(dim=(2, 3)) / n.clamp(min=1)
+        corr, valid = _masked_corr(pred_raw, t_raw, mask, min_pts=3)
+        nan = lambda a: torch.full_like(a, float('nan'))
+        g_t.append(sm.mean(dim=(2, 3)).cpu())
+        e_t.append(torch.where(n > 0, e, nan(e)).cpu())
+        c_t.append(torch.where(valid, corr, nan(corr)).cpu())
+    mets = comp_metric_final(acc)
+    per = lambda a: [round(v, 5) for v in torch.nanmean(torch.cat(a), dim=0).tolist()]
+    mets['per_hour'] = dict(gsmape=per(g_t), esmape=per(e_t), ecorr=per(c_t))
+    return mets
+
+
+# %% [markdown]
+# ## 6. Training - V4 phase A loop with gradient accumulation
+#
+# The loop is V4's (AdamW, one-cycle, AMP, grad clip 1.0, EMA ramp, best
+# epoch by val score, last checkpoint every epoch, resume). The one addition:
+# if a batch of 4 does not fit in GPU memory, the batch is split into
+# micro-batches and gradients are accumulated, so the optimizer still sees an
+# effective batch of 4 and the same number of steps per epoch.
+
+# %%
+class EMA:
+    def __init__(self, model, decay):
+        self.decay = decay
+        self.n = 0
+        self.shadow = {k: v.detach().clone().float()
+                       for k, v in model.state_dict().items()
+                       if v.dtype.is_floating_point}
+
+    @torch.no_grad()
+    def update(self, model):
+        self.n += 1
+        d = min(self.decay, (1 + self.n) / (10 + self.n))
+        for k, v in model.state_dict().items():
+            if k in self.shadow:
+                self.shadow[k].mul_(d).add_(v.float(), alpha=1 - d)
+
+    def state_for_eval(self, model):
+        sd = {k: v.clone() for k, v in model.state_dict().items()}
+        for k in self.shadow:
+            sd[k] = self.shadow[k].to(sd[k].dtype)
+        return sd
+
+
+@torch.no_grad()
+def validate(model, loader, criterion):
+    model.eval()
+    acc = defaultdict(list)
+    vloss, nb = 0.0, 0
+    for x, t_log, t_raw, last_log, mask in loader:
+        x, t_log = x.to(DEVICE), t_log.to(DEVICE)
+        t_raw, last_log, mask = t_raw.to(DEVICE), last_log.to(DEVICE), mask.to(DEVICE)
+        with torch.autocast('cuda', enabled=DEVICE.type == 'cuda'):
+            pred_log = model(x, last_log)
+        pred_log = pred_log.float()
+        loss, _ = criterion(pred_log, t_log, t_raw, mask)
+        vloss += loss.item(); nb += 1
+        pred_raw = F.relu(torch.expm1(pred_log.clamp(max=13.0)))
+        comp_metric_batch(pred_raw, t_raw, mask, acc)
+    mets = comp_metric_final(acc)
+    mets['loss'] = vloss / max(nb, 1)
+    return mets
+
+
+def time_left():
+    return C.MAX_HOURS * 3600 - (time.time() - T0_GLOBAL)
+
+
+def log_epoch(row):
+    import csv
+    path = os.path.join(C.WORK, 'train_log.csv')
+    new = not os.path.exists(path)
+    with open(path, 'a', newline='') as fh:
+        w = csv.DictWriter(fh, fieldnames=list(row.keys()))
+        if new:
+            w.writeheader()
+        w.writerow(row)
+
+
+def pick_micro(model, ds, batch):
+    """Largest micro-batch (batch, batch/2, ..., 1) whose forward + backward
+    peaks below 85% of GPU memory. Model weights are restored afterwards."""
+    if DEVICE.type != 'cuda':
+        return batch
+    state = {k: v.clone() for k, v in model.state_dict().items()}
+    total = torch.cuda.get_device_properties(0).total_memory
+    crit = CompositeLoss(C.LOSS_A, C.EP_WT_A)
+    micro, chosen = batch, None
+    while micro >= 1 and chosen is None:
+        try:
+            items = [ds[i] for i in range(micro)]
+            x, t_log, t_raw, last_log, mask = [torch.stack(z).to(DEVICE) for z in zip(*items)]
+            torch.cuda.reset_peak_memory_stats()
+            model.train()
+            with torch.autocast('cuda'):
+                pl = model(x, last_log)
+            loss, _ = crit(pl.float(), t_log, t_raw, mask)
+            loss.backward()
+            torch.cuda.synchronize()
+            peak = torch.cuda.max_memory_allocated()
+            ok = peak < 0.85 * total
+            print(f'  micro-batch {micro}: peak {peak/1e9:.2f} GB of {total/1e9:.1f} GB'
+                  f' -> {"ok" if ok else "too close to the limit"}')
+            if ok:
+                chosen = micro
+        except torch.cuda.OutOfMemoryError:
+            print(f'  micro-batch {micro}: out of memory')
+        x = t_log = t_raw = last_log = mask = pl = loss = None
+        model.zero_grad(set_to_none=True)
+        gc.collect(); torch.cuda.empty_cache()
+        if chosen is None:
+            micro //= 2
+    model.load_state_dict(state)
+    if chosen is None:
+        raise RuntimeError('even a micro-batch of 1 does not fit in GPU memory')
+    return chosen
+
+
+def run_phase(model, name, train_ds, val_ds, loss_w, ep_wt, lr, epochs,
+              batch, patience, micro):
+    accum = batch // micro
+    crit = CompositeLoss(loss_w, ep_wt)
+    nw = C.WORKERS
+    pw = nw > 0
+    tl = DataLoader(train_ds, batch_size=micro, shuffle=True,
+                    num_workers=nw, pin_memory=True, drop_last=True,
+                    persistent_workers=pw)
+    vl = DataLoader(val_ds, batch_size=micro, shuffle=False,
+                    num_workers=nw, pin_memory=True, persistent_workers=pw)
+    steps_ep = len(tl) // accum
+
+    opt = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=C.WD)
+    sched = torch.optim.lr_scheduler.OneCycleLR(
+        opt, max_lr=lr, total_steps=steps_ep * epochs, pct_start=0.05,
+        div_factor=20, final_div_factor=200)
+    scaler = torch.amp.GradScaler('cuda', enabled=DEVICE.type == 'cuda')
+    ema = EMA(model, C.EMA_DECAY)
+    best_path = os.path.join(C.WORK, f'{name}_best.pt')
+    last_path = os.path.join(C.WORK, f'{name}_last.pt')
+
+    start_ep, best_score, best_ep, bad = 1, -1.0, 0, 0
+    time_stop = False
+    prev_last = art(f'{name}_last.pt')
+    if prev_last:
+        ck = torch.load(prev_last, map_location=DEVICE, weights_only=False)
+        model.load_state_dict(ck['model'])
+        opt.load_state_dict(ck['opt'])
+        sched.load_state_dict(ck['sched'])
+        ema.shadow = {k: v.to(DEVICE) for k, v in ck['ema'].items()}
+        ema.n = ck.get('ema_n', 0)
+        start_ep = ck['epoch'] + 1
+        best_score = ck['best_score']
+        best_ep = ck.get('best_ep', 0)
+        bad = ck.get('bad', 0)
+        print(f'[{name}] resumed at epoch {start_ep}, best={best_score:.4f}')
+
+    print(f'[{name}] {steps_ep} optimizer steps per epoch, micro-batch {micro} x {accum}')
+    epoch_secs = []
+    for ep in range(start_ep, epochs + 1):
+        if time_left() < 600:
+            print(f'[{name}] time budget reached, stopping')
+            time_stop = True
+            break
+        t0 = time.time()
+        if DEVICE.type == 'cuda':
+            torch.cuda.reset_peak_memory_stats()
+        model.train()
+        tloss, nb = 0.0, 0
+        tr_acc = defaultdict(float)
+        opt.zero_grad(set_to_none=True)
+        grads_in_group = 0
+        for i, (x, t_log, t_raw, last_log, mask) in enumerate(tl):
+            if i >= steps_ep * accum:
+                break
+            if i % 50 == 0 and i > 0 and time_left() < 600:
+                print(f'[{name}] time budget reached mid-epoch, stopping')
+                time_stop = True
+                break
+            x, t_log = x.to(DEVICE, non_blocking=True), t_log.to(DEVICE, non_blocking=True)
+            t_raw = t_raw.to(DEVICE, non_blocking=True)
+            last_log = last_log.to(DEVICE, non_blocking=True)
+            mask = mask.to(DEVICE, non_blocking=True)
+            with torch.autocast('cuda', enabled=DEVICE.type == 'cuda'):
+                pred_log = model(x, last_log)
+            loss, mets = crit(pred_log.float(), t_log, t_raw, mask)
+            if torch.isfinite(loss):
+                scaler.scale(loss / accum).backward()
+                grads_in_group += 1
+                tloss += loss.item(); nb += 1
+                for k, v in mets.items():
+                    tr_acc[k] += v
+            else:
+                print(f'  [{name} E{ep} {i}] non-finite loss, micro-batch skipped')
+            if (i + 1) % accum:
+                continue
+            step = (i + 1) // accum
+            if grads_in_group:
+                scaler.unscale_(opt)
+                torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+                scaler.step(opt)
+                scaler.update()
+                sched.step()
+                ema.update(model)
+            opt.zero_grad(set_to_none=True)
+            grads_in_group = 0
+            if (step - 1) % 100 == 0 and nb:
+                print(f'  [{name} E{ep} {step - 1}/{steps_ep}] loss={loss.item():.4f} '
+                      f'gsm={mets["gsmape"]:.4f} esm={mets["esmape"]:.4f} '
+                      f'ec={mets["ecorr"]:.4f} '
+                      f'lr={opt.param_groups[0]["lr"]:.2e}')
+
+        if time_stop:
+            break
+        raw_sd = {k: v.clone() for k, v in model.state_dict().items()}
+        model.load_state_dict(ema.state_for_eval(model))
+        vm = validate(model, vl, crit)
+        model.load_state_dict(raw_sd)
+
+        improved = vm['score'] > best_score
+        if improved:
+            best_score, best_ep, bad = vm['score'], ep, 0
+            torch.save({'model': ema.state_for_eval(model), 'metrics': vm,
+                        'epoch': ep, 'backbone': BACKBONE}, best_path)
+        else:
+            bad += 1
+        torch.save({'model': model.state_dict(), 'opt': opt.state_dict(),
+                    'sched': sched.state_dict(), 'ema': ema.shadow,
+                    'ema_n': ema.n, 'epoch': ep, 'best_score': best_score,
+                    'best_ep': best_ep, 'bad': bad}, last_path)
+        tr_m = {k: v / max(nb, 1) for k, v in tr_acc.items()}
+        secs = time.time() - t0
+        epoch_secs.append(secs)
+        peak = torch.cuda.max_memory_allocated() / 1e9 if DEVICE.type == 'cuda' else 0.0
+        eta = (epochs - ep) * float(np.mean(epoch_secs)) / 60
+        print(f'[{name}] E{ep}/{epochs} ({secs:.0f}s, peak {peak:.1f} GB, '
+              f'~{eta:.0f} min left)')
+        print(f'  train | loss={tloss/max(nb,1):.4f} '
+              f'gsmape={tr_m.get("gsmape",0):.4f} '
+              f'esmape={tr_m.get("esmape",0):.4f} '
+              f'ecorr={tr_m.get("ecorr",0):.4f}')
+        print(f'  val   | score={vm["score"]:.4f}  '
+              f'NormGlobalSMAPE={vm["norm_gsmape"]:.4f} '
+              f'NormEpisodeCorr={vm["norm_ecorr"]:.4f} '
+              f'NormEpisodeSMAPE={vm["norm_esmape"]:.4f}  '
+              f'(raw: gsm={vm["gsmape"]:.4f} esm={vm["esmape"]:.4f} '
+              f'ec={vm["ecorr"]:.4f})'
+              + ('  *BEST -> saved*' if improved else f'  (best={best_score:.4f})'))
+        log_epoch(dict(phase=name, epoch=ep, secs=round(secs), peak_gb=round(peak, 2),
+                       lr=opt.param_groups[0]['lr'],
+                       tr_loss=round(tloss / max(nb, 1), 5),
+                       tr_gsmape=round(tr_m.get('gsmape', 0), 5),
+                       tr_esmape=round(tr_m.get('esmape', 0), 5),
+                       tr_ecorr=round(tr_m.get('ecorr', 0), 5),
+                       val_loss=round(vm['loss'], 5),
+                       val_gsmape=round(vm['gsmape'], 5),
+                       val_esmape=round(vm['esmape'], 5),
+                       val_ecorr=round(vm['ecorr'], 5),
+                       norm_gsmape=round(vm['norm_gsmape'], 5),
+                       norm_ecorr=round(vm['norm_ecorr'], 5),
+                       norm_esmape=round(vm['norm_esmape'], 5),
+                       val_score=round(vm['score'], 5),
+                       best=int(improved)))
+        if bad >= patience:
+            print(f'[{name}] early stop (best={best_score:.4f})')
+            break
+
+    if not time_stop:
+        with open(os.path.join(C.WORK, f'{name}_done.flag'), 'w') as fh:
+            fh.write(f'best={best_score:.4f} epoch={best_ep}\n')
+    secs_mean = float(np.mean(epoch_secs)) if epoch_secs else None
+    return (best_path if os.path.exists(best_path) else art(f'{name}_best.pt')), secs_mean
+
+
+# %% [markdown]
+# ## 7. Run: GPU check -> data -> pipeline check -> train -> evaluate -> predict
+#
+# Outputs in `/kaggle/working`: `preds.npy` (submission, no post-processing),
+# `<backbone>_s42_phaseA_best.pt` / `_last.pt`, `train_log.csv` and
+# `summary.json` (scores, per-hour metrics, pipeline check, timing).
+
+# %%
+def predict(model, test_ds, bs):
+    model.eval()
+    dl = DataLoader(test_ds, batch_size=bs, shuffle=False, num_workers=0, pin_memory=True)
+    out = np.zeros((len(test_ds), C.H, C.W, C.T_OUT), np.float32)
+    i = 0
+    with torch.no_grad():
+        for x, last_log in dl:
+            x, last_log = x.to(DEVICE), last_log.to(DEVICE)
+            with torch.autocast('cuda', enabled=DEVICE.type == 'cuda'):
+                pl = model(x, last_log)
+            pr = F.relu(torch.expm1(pl.float().clamp(max=13.0)))
+            out[i:i + x.shape[0]] = pr.permute(0, 2, 3, 1).cpu().numpy()
+            i += x.shape[0]
+    return out
+
+
+def save_preds(preds):
+    preds = preds.astype(np.float32)
+    assert preds.shape == (C.N_TEST, C.H, C.W, C.T_OUT), preds.shape
+    assert np.isfinite(preds).all()
+    np.save(os.path.join(C.WORK, 'preds.npy'), preds)
+    print(f'  preds.npy written  range=[{preds.min():.2f},{preds.max():.2f}]  '
+          f'mean={preds.mean():.3f}')
+
+
+def pipeline_check(val_ds):
+    """Re-evaluate V4's seed-42 checkpoint here; it must reproduce its logged score."""
+    path = art('s42_phaseA_best.pt')
+    if not path:
+        raise RuntimeError('V4 checkpoint s42_phaseA_best.pt not found in the attached V4 output')
+    ck = torch.load(path, map_location=DEVICE, weights_only=False)
+    ref = float(ck['metrics']['score'])
+    model = AFNOv4().to(DEVICE)
+    model.load_state_dict(ck['model'])
+    vl = DataLoader(val_ds, batch_size=4, shuffle=False, num_workers=C.WORKERS, pin_memory=True)
+    vm = evaluate(model, vl)
+    diff = vm['score'] - ref
+    print(f'  V4 seed-42 checkpoint: logged val {ref:.4f}, re-evaluated here {vm["score"]:.4f} '
+          f'(diff {diff:+.5f}, tolerance {C.CHECK_TOL})')
+    del model
+    gc.collect(); torch.cuda.empty_cache()
+    if abs(diff) > C.CHECK_TOL:
+        raise RuntimeError('pipeline check failed: this notebook does not reproduce the V4 '
+                           'validation score, so its results would not be comparable')
+    return dict(logged=round(ref, 5), reproduced=round(vm['score'], 5),
+                diff=round(diff, 6), v4_per_hour=vm['per_hour'],
+                v4_terms={k: round(vm[k], 5) for k in ('gsmape', 'esmape', 'ecorr')})
+
+
+def main():
+    summary = dict(backbone=BACKBONE, seed=C.SEED, status='started',
+                   torch=torch.__version__, v4_reference=C.V4_REF)
+    sp = os.path.join(C.WORK, 'summary.json')
+    dump = lambda: json.dump(summary, open(sp, 'w'), indent=1)
+
+    print('=' * 60, '\nSTEP 0: environment\n', '=' * 60)
+    if C.IS_KAGGLE:
+        summary['gpu'] = check_gpu()
+        if not C.DATA_ROOT:
+            raise RuntimeError('competition data not found under /kaggle/input')
+        if not C.V4_DIR:
+            raise RuntimeError('V4 output not found: attach notebook imvetri0/afno-v4 as input')
+    print('  data   :', C.DATA_ROOT)
+    print('  V4 out :', C.V4_DIR)
+    print('  resume :', C.RESUME_DIR)
+    name = f'{BACKBONE}_s{C.SEED}_phaseA'
+    if C.RESUME_DIR:
+        for f in (f'{name}_best.pt', 'train_log.csv'):
+            src = os.path.join(C.RESUME_DIR, f)
+            if os.path.exists(src) and not os.path.exists(os.path.join(C.WORK, f)):
+                shutil.copy(src, C.WORK)
+                print(f'  carried over from the earlier run: {f}')
+
+    print('=' * 60, '\nSTEP 1: stats + episode masks (from the V4 output)\n', '=' * 60)
+    print('  stats from:', art('stats.npz') or 'computing')
+    stats = build_stats()
+    months, static = load_months(stats)
+
+    print('=' * 60, '\nSTEP 2: datasets\n', '=' * 60)
+    train_ds = PM25Windows(months, static, stats, 'train')
+    val_ds = PM25Windows(months, static, stats, 'val')
+    test_ds = PM25Test(stats, static)
+
+    print('=' * 60, '\nSTEP 3: pipeline check (V4 checkpoint on this validation set)\n', '=' * 60)
+    summary['pipeline_check'] = pipeline_check(val_ds)
+    dump()
+
+    print('=' * 60, f'\nSTEP 4: build {BACKBONE}\n', '=' * 60)
+    seed_all(C.SEED)
+    model = BACKBONES[BACKBONE]().to(DEVICE)
+    n_par = sum(p.numel() for p in model.parameters())
+    print(f'  {BACKBONE} params: {n_par:,} ({n_par/1e6:.2f}M)')
+    x, _, _, last_log, _ = val_ds[0]
+    model.eval()
+    with torch.no_grad():
+        y = model(x[None].to(DEVICE), last_log[None].to(DEVICE))
+    assert y.shape == (1, C.T_OUT, C.H, C.W), y.shape
+    gap = (y - last_log[None, None].to(DEVICE)).abs().max().item()
+    print(f'  output {tuple(y.shape)}; at init it equals persistence (max diff {gap:.2e})')
+    assert gap < 1e-4, 'final layer is not zero-initialized'
+    micro = pick_micro(model, train_ds, C.A_BATCH)
+    summary.update(params=n_par, micro_batch=micro, accum=C.A_BATCH // micro)
+    dump()
+
+    print('=' * 60, f'\nSTEP 5: train {name}\n', '=' * 60)
+    secs = None
+    t_train = time.time()
+    if art(f'{name}_done.flag') and art(f'{name}_best.pt'):
+        print('  already trained in an earlier session, skipping')
+    else:
+        try:
+            _, secs = run_phase(model, name, train_ds, val_ds, C.LOSS_A, C.EP_WT_A,
+                                C.A_LR, C.A_EPOCHS, C.A_BATCH, C.A_PATIENCE, micro)
+        except Exception as e:
+            traceback.print_exc()
+            summary['status'] = f'training interrupted: {type(e).__name__}: {e}'
+            dump()
+    summary.update(train_minutes=round((time.time() - t_train) / 60, 1),
+                   secs_per_epoch=round(secs, 1) if secs else None)
+    if summary['status'] == 'started' and not art(f'{name}_done.flag'):
+        summary['status'] = ('incomplete: time budget reached; attach this output '
+                             'as an input and run again to resume')
+
+    print('=' * 60, '\nSTEP 6: evaluate the best epoch + test inference\n', '=' * 60)
+    best = art(f'{name}_best.pt')
+    if not best:
+        summary['status'] = 'failed: no checkpoint'
+        dump()
+        raise RuntimeError('no best checkpoint was saved')
+    ck = torch.load(best, map_location=DEVICE, weights_only=False)
+    model.load_state_dict(ck['model'])
+    vl = DataLoader(val_ds, batch_size=micro, shuffle=False, num_workers=C.WORKERS, pin_memory=True)
+    vm = evaluate(model, vl)
+    print(f'  best epoch {ck.get("epoch")}: val score {vm["score"]:.4f} '
+          f'(gsm {vm["gsmape"]:.4f}, esm {vm["esmape"]:.4f}, ec {vm["ecorr"]:.4f})')
+    print(f'  AFNO V4 reference: val {C.V4_REF["val"]:.4f} -> difference '
+          f'{vm["score"] - C.V4_REF["val"]:+.4f}')
+    summary['best'] = dict(epoch=ck.get('epoch'),
+                           **{k: round(v, 5) for k, v in vm.items() if k != 'per_hour'},
+                           per_hour=vm['per_hour'])
+    save_preds(predict(model, test_ds, micro))
+    if summary['status'] == 'started':
+        summary['status'] = 'complete'
+    summary['total_minutes'] = round((time.time() - T0_GLOBAL) / 60, 1)
+    dump()
+    print('  summary.json written; status:', summary['status'])
+
+
+if __name__ == '__main__':
+    main()
