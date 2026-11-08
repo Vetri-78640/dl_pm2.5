@@ -1,0 +1,34 @@
+[{"stream_name":"stderr","time":10.419815283,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":10.419890665,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":10.419898561,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":10.419903159,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":11.466817991,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":11.466898189,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":11.466907288,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":11.466913159,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":17.883661053,"data":"device: cpu  backbone: resgru\n"}
+,{"stream_name":"stdout","time":27.118257623,"data":"  APRIL_16: T=715  ep_ratio=0.0208\n"}
+,{"stream_name":"stdout","time":35.218885025,"data":"  JULY_16: T=739  ep_ratio=0.0197\n"}
+,{"stream_name":"stdout","time":43.722578168,"data":"  OCT_16: T=739  ep_ratio=0.0170\n"}
+,{"stream_name":"stdout","time":51.846252004,"data":"  DEC_16: T=739  ep_ratio=0.0217\n"}
+,{"stream_name":"stdout","time":52.380388809,"data":"  train: 2257 windows  ep_density mean=0.0201\n"}
+,{"stream_name":"stdout","time":52.822094147,"data":"  val hour estimation: \u003c=1h 0.977\n"}
+,{"stream_name":"stdout","time":52.822158278,"data":"  val: 214 windows  ep_density mean=0.0182\n"}
+,{"stream_name":"stdout","time":109.935931931,"data":"  fitted on 2,448,845 pixel-windows (2257 train windows)\n"}
+,{"stream_name":"stdout","time":130.585531318,"data":"  lambda 0.01: val score 0.86370\n"}
+,{"stream_name":"stdout","time":135.772687066,"data":"  lambda 1.0: val score 0.86370\n"}
+,{"stream_name":"stdout","time":140.530292809,"data":"  lambda 100.0: val score 0.86368\n"}
+,{"stream_name":"stdout","time":145.618407041,"data":"  lambda 10000.0: val score 0.86227\n"}
+,{"stream_name":"stdout","time":150.47333001,"data":"  lambda 1000000.0: val score 0.85753\n"}
+,{"stream_name":"stdout","time":155.580524838,"data":"  lambda zero: val score 0.85154\n"}
+,{"stream_name":"stdout","time":167.47138566,"data":"  test start-hour histogram: [16, 0, 19, 0, 13, 7, 10, 10, 8, 10, 9, 8, 8, 12, 5, 15, 9, 9, 9, 6, 12, 7, 12, 4]\n"}
+,{"stream_name":"stdout","time":196.50392232,"data":"  ridge: MAE 8.507 RMSE 21.482 R2 0.8466 score 0.86370; checks: all pass\n"}
+,{"stream_name":"stderr","time":201.08337072,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":201.083421607,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":201.375701232,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":201.375747831,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":202.476163938,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":202.600413984,"data":"[NbConvertApp] Writing 156481 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":206.470481773,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":208.024369297,"data":"[NbConvertApp] Writing 1052062 bytes to __results__.html\n"}
+]

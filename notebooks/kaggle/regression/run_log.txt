@@ -1,0 +1,85 @@
+[{"stream_name":"stderr","time":6.7956041,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":6.79568441,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":6.79569028,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":6.795699395,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":7.364856067,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":7.364902724,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":7.364943405,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":7.364949349,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":15.490996375,"data":"device: cuda  backbone: resgru\n"}
+,{"stream_name":"stdout","time":19.911059961,"data":"GPU: Tesla T4  sm_75  15.6 GB  torch 2.11.0+cu130\n"}
+,{"stream_name":"stdout","time":23.3056724,"data":"============================================================ \n"}
+,{"stream_name":"stdout","time":23.305723634,"data":"PRE-CHECK: 17 checkpoints, analysis.json, final-round summary\n"}
+,{"stream_name":"stdout","time":23.305729214,"data":" ============================================================\n"}
+,{"stream_name":"stdout","time":23.305732922,"data":"  ok      afnov4 seed 42\n"}
+,{"stream_name":"stdout","time":23.305736753,"data":"  ok      afnov4 seed 1337\n"}
+,{"stream_name":"stdout","time":23.305740577,"data":"  ok      afnov4 seed 1\n"}
+,{"stream_name":"stdout","time":23.305744333,"data":"  ok      afnov4 seed 2\n"}
+,{"stream_name":"stdout","time":23.305747752,"data":"  ok      afnov4 seed 3\n"}
+,{"stream_name":"stdout","time":23.305751587,"data":"  ok      resgru seed 42\n"}
+,{"stream_name":"stdout","time":23.305755306000002,"data":"  ok      resgru seed 1337\n"}
+,{"stream_name":"stdout","time":23.305764314,"data":"  ok      resgru seed 1\n"}
+,{"stream_name":"stdout","time":23.305767537,"data":"  ok      resgru seed 2\n"}
+,{"stream_name":"stdout","time":23.305770821,"data":"  ok      resgru seed 3\n"}
+,{"stream_name":"stdout","time":23.305774062,"data":"  ok      fmgwaclu seed 42\n"}
+,{"stream_name":"stdout","time":23.305777485,"data":"  ok      convlstm seed 42\n"}
+,{"stream_name":"stdout","time":23.305786302,"data":"  ok      patchafno seed 42\n"}
+,{"stream_name":"stdout","time":23.305788942,"data":"  ok      afnov4_allskip seed 42\n"}
+,{"stream_name":"stdout","time":23.305791222,"data":"  ok      afnov4_pad seed 42\n"}
+,{"stream_name":"stdout","time":23.305793463,"data":"  ok      afnov4_nosparse seed 42\n"}
+,{"stream_name":"stdout","time":23.305795793,"data":"  ok      resgru_norec seed 42\n"}
+,{"stream_name":"stdout","time":34.20994575,"data":"  APRIL_16: T=715  ep_ratio=0.0208\n"}
+,{"stream_name":"stdout","time":43.057979466,"data":"  JULY_16: T=739  ep_ratio=0.0197\n"}
+,{"stream_name":"stdout","time":51.203263214,"data":"  OCT_16: T=739  ep_ratio=0.0170\n"}
+,{"stream_name":"stdout","time":60.500183962,"data":"  DEC_16: T=739  ep_ratio=0.0217\n"}
+,{"stream_name":"stdout","time":60.700844638,"data":"  val hour estimation: \u003c=1h 0.977\n"}
+,{"stream_name":"stdout","time":60.700878355,"data":"  val: 214 windows  ep_density mean=0.0182\n"}
+,{"stream_name":"stdout","time":60.700885253,"data":"============================================================ \n"}
+,{"stream_name":"stdout","time":60.700904335,"data":"STEP A: every trained model on val\n"}
+,{"stream_name":"stdout","time":60.700946197,"data":" ============================================================\n"}
+,{"stream_name":"stdout","time":78.565044973,"data":"  AFNO V4 seed 42                            round one (1 seed); 5 seeds  MAE    7.308  RMSE   20.167  R2 0.8648  R2 log 0.9405  score 0.91103\n"}
+,{"stream_name":"stdout","time":92.569110266,"data":"  AFNO V4 seed 1337                          5 seeds                      MAE    7.259  RMSE   19.878  R2 0.8686  R2 log 0.9410  score 0.91141\n"}
+,{"stream_name":"stdout","time":107.236427118,"data":"  AFNO V4 seed 1                             5 seeds                      MAE    7.236  RMSE   20.101  R2 0.8657  R2 log 0.9412  score 0.91178\n"}
+,{"stream_name":"stdout","time":122.074011696,"data":"  AFNO V4 seed 2                             5 seeds                      MAE    7.227  RMSE   19.737  R2 0.8705  R2 log 0.9409  score 0.91227\n"}
+,{"stream_name":"stdout","time":136.615077624,"data":"  AFNO V4 seed 3                             5 seeds                      MAE    7.061  RMSE   19.715  R2 0.8708  R2 log 0.9438  score 0.91080\n"}
+,{"stream_name":"stdout","time":146.707464616,"data":"  ResGRU-UNet seed 42                        round one (1 seed); 5 seeds  MAE    6.573  RMSE   18.574  R2 0.8853  R2 log 0.9488  score 0.91579\n"}
+,{"stream_name":"stdout","time":156.518138648,"data":"  ResGRU-UNet seed 1337                      5 seeds                      MAE    6.562  RMSE   18.568  R2 0.8854  R2 log 0.9507  score 0.91523\n"}
+,{"stream_name":"stdout","time":166.57711974,"data":"  ResGRU-UNet seed 1                         5 seeds                      MAE    6.582  RMSE   18.526  R2 0.8859  R2 log 0.9478  score 0.91687\n"}
+,{"stream_name":"stdout","time":176.931885366,"data":"  ResGRU-UNet seed 2                         5 seeds                      MAE    6.507  RMSE   18.488  R2 0.8864  R2 log 0.9519  score 0.91784\n"}
+,{"stream_name":"stdout","time":186.859645353,"data":"  ResGRU-UNet seed 3                         5 seeds                      MAE    6.654  RMSE   18.802  R2 0.8825  R2 log 0.9475  score 0.91579\n"}
+,{"stream_name":"stdout","time":209.497421614,"data":"  FMG-WACLU seed 42                          round one (1 seed)           MAE    7.143  RMSE   19.325  R2 0.8759  R2 log 0.9424  score 0.90992\n"}
+,{"stream_name":"stdout","time":218.194527519,"data":"  ConvLSTM seed 42                           round one (1 seed)           MAE    7.050  RMSE   18.925  R2 0.8809  R2 log 0.9399  score 0.89448\n"}
+,{"stream_name":"stdout","time":225.625705211,"data":"  patch AFNO seed 42                         round one (1 seed)           MAE    6.854  RMSE   19.023  R2 0.8797  R2 log 0.9427  score 0.90312\n"}
+,{"stream_name":"stdout","time":241.734539481,"data":"  AFNO V4, all-hour skips (H1) seed 42       ablation (1 seed)            MAE    7.029  RMSE   19.514  R2 0.8734  R2 log 0.9426  score 0.91259\n"}
+,{"stream_name":"stdout","time":265.025261878,"data":"  AFNO V4, padded (H2) seed 42               ablation (1 seed)            MAE    7.129  RMSE   19.712  R2 0.8708  R2 log 0.9415  score 0.91062\n"}
+,{"stream_name":"stdout","time":280.628775946,"data":"  AFNO V4, no soft-threshold (H3) seed 42    ablation (1 seed)            MAE    7.313  RMSE   20.333  R2 0.8626  R2 log 0.9408  score 0.91094\n"}
+,{"stream_name":"stdout","time":290.982178845,"data":"  ResGRU-UNet, no recurrence (H4) seed 42    ablation (1 seed)            MAE    6.698  RMSE   18.849  R2 0.8819  R2 log 0.9465  score 0.91456\n"}
+,{"stream_name":"stdout","time":290.982223417,"data":"============================================================ \n"}
+,{"stream_name":"stdout","time":290.982231612,"data":"STEP B: 2- and 5-seed means, calibrated\n"}
+,{"stream_name":"stdout","time":290.982256904,"data":" ============================================================\n"}
+,{"stream_name":"stdout","time":293.33215842,"data":"  AFNO V4 2-seed mean                        final round (2 seeds)        MAE    7.146  RMSE   19.732  R2 0.8706  R2 log 0.9422  score 0.91311\n"}
+,{"stream_name":"stdout","time":379.885253742,"data":"  AFNO V4 2-seed + cal (in sample)           final round (2 seeds)        MAE    7.836  RMSE   21.284  R2 0.8494  R2 log 0.9366  score 0.91430\n"}
+,{"stream_name":"stdout","time":382.086348912,"data":"  AFNO V4 2-seed + cal (leave-one-month-out) final round (2 seeds)        MAE    7.902  RMSE   21.131  R2 0.8516  R2 log 0.9360  score 0.91339\n"}
+,{"stream_name":"stdout","time":384.251969978,"data":"  AFNO V4 5-seed mean                        5 seeds                      MAE    6.988  RMSE   19.448  R2 0.8743  R2 log 0.9438  score 0.91454\n"}
+,{"stream_name":"stdout","time":471.459916974,"data":"  AFNO V4 5-seed + cal (in sample)           5 seeds                      MAE    7.688  RMSE   21.015  R2 0.8532  R2 log 0.9383  score 0.91581\n"}
+,{"stream_name":"stdout","time":473.63386634,"data":"  AFNO V4 5-seed + cal (leave-one-month-out) 5 seeds                      MAE    7.760  RMSE   20.896  R2 0.8548  R2 log 0.9377  score 0.91492\n"}
+,{"stream_name":"stdout","time":475.799004041,"data":"  ResGRU-UNet 2-seed mean                    final round (2 seeds)        MAE    6.400  RMSE   18.210  R2 0.8898  R2 log 0.9517  score 0.91747\n"}
+,{"stream_name":"stdout","time":565.898729518,"data":"  ResGRU-UNet 2-seed + cal (in sample)       final round (2 seeds)        MAE    7.220  RMSE   20.171  R2 0.8647  R2 log 0.9454  score 0.91982\n"}
+,{"stream_name":"stdout","time":568.107679141,"data":"  ResGRU-UNet 2-seed + cal (leave-one-month-out) final round (2 seeds)        MAE    7.229  RMSE   20.005  R2 0.8670  R2 log 0.9453  score 0.91934\n"}
+,{"stream_name":"stdout","time":570.314938089,"data":"  ResGRU-UNet 5-seed mean                    5 seeds                      MAE    6.324  RMSE   18.043  R2 0.8918  R2 log 0.9520  score 0.91933\n"}
+,{"stream_name":"stdout","time":659.230492827,"data":"  ResGRU-UNet 5-seed + cal (in sample)       5 seeds                      MAE    7.131  RMSE   19.936  R2 0.8679  R2 log 0.9458  score 0.92150\n"}
+,{"stream_name":"stdout","time":661.325371985,"data":"  ResGRU-UNet 5-seed + cal (leave-one-month-out) 5 seeds                      MAE    7.124  RMSE   19.709  R2 0.8709  R2 log 0.9459  score 0.92097\n"}
+,{"stream_name":"stdout","time":661.325409181,"data":"============================================================ \n"}
+,{"stream_name":"stdout","time":661.325414895,"data":"STEP C: persistence\n"}
+,{"stream_name":"stdout","time":661.325419289,"data":" ============================================================\n"}
+,{"stream_name":"stdout","time":667.424524889,"data":"  persistence (last input hour)              baseline                     MAE   10.439  RMSE   26.457  R2 0.7673  R2 log 0.8953  score 0.85154\n"}
+,{"stream_name":"stdout","time":669.305175612,"data":"  regression_metrics.json written (30 models); checks: all pass\n"}
+,{"stream_name":"stderr","time":674.362080642,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":674.362108275,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":674.524924339,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":674.524951345,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":675.309259969,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":675.396693873,"data":"[NbConvertApp] Writing 151876 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":677.907186493,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":679.057957269,"data":"[NbConvertApp] Writing 1009154 bytes to __results__.html\n"}
+]

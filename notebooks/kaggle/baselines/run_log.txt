@@ -1,0 +1,27 @@
+[{"stream_name":"stderr","time":8.23297845,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":8.233027555,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":8.233035158,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":8.233038617,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":9.01521913,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":9.015282245,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":9.015288362,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":9.015293765,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":14.270876001,"data":"device: cpu  backbone: resgru\n"}
+,{"stream_name":"stdout","time":26.121294379,"data":"  APRIL_16: T=715  ep_ratio=0.0208\n"}
+,{"stream_name":"stdout","time":37.431607131,"data":"  JULY_16: T=739  ep_ratio=0.0197\n"}
+,{"stream_name":"stdout","time":48.013429679,"data":"  OCT_16: T=739  ep_ratio=0.0170\n"}
+,{"stream_name":"stdout","time":59.035881945,"data":"  DEC_16: T=739  ep_ratio=0.0217\n"}
+,{"stream_name":"stdout","time":59.367321982,"data":"  val hour estimation: \u003c=1h 0.977\n"}
+,{"stream_name":"stdout","time":59.367357185,"data":"  val: 214 windows  ep_density mean=0.0182\n"}
+,{"stream_name":"stdout","time":73.96663797,"data":"  persistence (last input hour)              MAE 10.439  RMSE 26.457  R2 0.7673  score 0.85154\n"}
+,{"stream_name":"stdout","time":77.98540691,"data":"  seasonal naive (same hour, 24 h earlier)   MAE 11.532  RMSE 26.797  R2 0.7613  score 0.79069\n"}
+,{"stream_name":"stdout","time":77.98544192,"data":"  baselines.json written; checks: all pass\n"}
+,{"stream_name":"stderr","time":81.952519791,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":81.952588417,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":82.159817501,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":82.159849398,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":83.114709081,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":83.230223597,"data":"[NbConvertApp] Writing 150334 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":86.63787793,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":88.114718215,"data":"[NbConvertApp] Writing 1024023 bytes to __results__.html\n"}
+]

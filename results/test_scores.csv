@@ -1,0 +1,27 @@
+date_utc,description,public_score,private_score
+2026-11-07 11:31,"ablation: AFNO V4 seed 1337 only, no calibration",0.8882,0.8749
+2026-11-07 11:31,"ablation: AFNO V4 seed 42 only, no calibration",0.8878,0.8762
+2026-11-07 11:32,"ablation: AFNO V4 2-seed mean, no calibration",0.8899,0.8779
+2026-11-07 15:57,"backbone study: ResGRU-UNet in the V4 pipeline, seed 42, val 0.9158",0.8924,0.8798
+2026-11-07 15:58,"backbone study: ConvLSTM in the V4 pipeline, seed 42, val 0.8945",0.8537,0.8452
+2026-11-07 15:58,"backbone study: FMG-WACLU in the V4 pipeline, seed 42, val 0.9099",0.8862,0.8710
+2026-11-07 15:58,"backbone study: patch AFNO (B14 fixed) in the V4 pipeline, seed 42, val 0.9031",0.8680,0.8530
+2026-11-07 18:01,"backbone study final: ResGRU-UNet 2 seeds (42+1337) mean, no calibration, val 0.9175",0.8948,0.8817
+2026-11-07 18:02,backbone study final: ResGRU-UNet 2 seeds + V4 per-horizon calibration (full V4 recipe),0.9033,0.8898
+2026-11-08 00:11,"backbone study 5 seeds: AFNO V4 5-seed mean + V4 per-horizon calibration, val 0.9158 (in sample)",0.8972,0.8848
+2026-11-08 00:11,"backbone study 5 seeds: ResGRU-UNet 5-seed mean + V4 per-horizon calibration, val 0.9215 (in sample)",0.9056,0.8914
+2026-11-08 00:12,"backbone study 5 seeds: AFNO V4 5-seed mean, no calibration, val 0.9145",0.8911,0.8793
+2026-11-08 00:12,"backbone study 5 seeds: ResGRU-UNet 5-seed mean, no calibration, val 0.9193",0.8975,0.8838
+2026-11-08 00:12,"backbone study 5 seeds: ResGRU-UNet seed 1337 only, no calibration, val 0.9152",0.8930,0.8788
+2026-11-08 00:13,"backbone study 5 seeds: AFNO V4 seed 1 only, no calibration, val 0.9118",0.8881,0.8758
+2026-11-08 00:13,"backbone study 5 seeds: ResGRU-UNet seed 1 only, no calibration, val 0.9169",0.8956,0.8796
+2026-11-08 00:14,"backbone study 5 seeds: AFNO V4 seed 2 only, no calibration, val 0.9123",0.8880,0.8767
+2026-11-08 00:14,"backbone study 5 seeds: AFNO V4 seed 3 only, no calibration, val 0.9108",0.8876,0.8734
+2026-11-08 00:14,"backbone study 5 seeds: ResGRU-UNet seed 2 only, no calibration, val 0.9178",0.8951,0.8805
+2026-11-08 00:15,"backbone study 5 seeds: ResGRU-UNet seed 3 only, no calibration, val 0.9158",0.8957,0.8810
+2026-11-08 01:07,"backbone study ablation H1: AFNO V4 with all-hour skips, seed 42, no calibration, val 0.9126",0.8865,0.8748
+2026-11-08 01:08,"backbone study ablation H3: AFNO V4 with soft-threshold 0, seed 42, no calibration, val 0.9109",0.8868,0.8758
+2026-11-08 03:31,"backbone study ablation H2: AFNO V4 with zero-padded AFNO blocks, seed 42, no calibration, val 0.9106",0.8869,0.8745
+2026-11-08 03:31,"backbone study ablation H4: ResGRU-UNet without ConvGRU recurrence, seed 42, no calibration, val 0.9146",0.8944,0.8798
+2026-11-08 08:31,"backbone study baseline: persistence (last input hour repeated for 16 h), no model, val 0.8515",0.8024,0.7910
+2026-11-08 16:02,"backbone study baseline: ridge regression (20 channels last hour + PM history), val 0.8637",0.8071,0.7951
