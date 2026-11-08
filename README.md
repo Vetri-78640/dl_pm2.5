@@ -23,6 +23,7 @@ Validation, the same 214 windows, pooled over every value (µg/m³). Full tables
 |:--|--:|--:|--:|--:|
 | Persistence | 10.44 | 26.46 | 0.767 | 0.8515 |
 | Seasonal naive (same hour, 24 h earlier) | 11.53 | 26.80 | 0.761 | 0.7907 |
+| Ridge regression (no neural network) | 8.51 | 21.48 | 0.847 | 0.8637 |
 | AFNO V4, 5-seed mean | 6.99 | 19.45 | 0.874 | 0.9145 |
 | ResGRU-UNet, 5-seed mean | 6.32 | 18.04 | 0.892 | 0.9193 |
 
@@ -83,11 +84,13 @@ src/                  notebook sources (percent format)
   analysis.py         5-seed analysis: ensembles, block bootstrap, breakdowns, figures
   regression.py       MAE, RMSE and R² for every compared model
   baselines.py        persistence and seasonal naive on the val windows
+  ridge.py            ridge regression baseline on the val windows and the test set
+  maps.py             per-pixel error maps for the paper
 scripts/              notebook builders, the ablation verdict, Kaggle helpers (tools/)
-tests/                local_check.py and the CPU dry runs, one per stage
-notebooks/kaggle/     the 13 Kaggle notebooks with kernel-metadata.json, exactly as they ran
+tests/                local_check.py and the CPU dry runs, one per stage except maps
+notebooks/kaggle/     the 15 Kaggle notebooks with kernel-metadata.json, exactly as they ran
 reference/afno_v4/    the AFNO V4 training script (seeds 42 and 1337), unchanged
-reports/              results.md, paper_draft.md, figures/
+reports/              results.md, paper_draft.md, figures/, paper/ (paper.tex, paper.pdf, figures)
 ```
 
 ## Running
@@ -116,11 +119,13 @@ uvx --python 3.12 --from kaggle==2.2.5 --with six kaggle kernels push -p noteboo
 | Ablations H1 to H4 | `ablations.py`; verdict with `scripts/ablation_verdict.py` | `build_ablations.py`, `dry_run_ablations.py` |
 | Regression metrics | `regression.py` | `build_regression.py`, `dry_run_regression.py` |
 | Baselines | `baselines.py` | `build_baselines.py`, `dry_run_baselines.py` |
+| Ridge regression baseline (CPU) | `ridge.py` | `build_ridge.py`, `dry_run_ridge.py` |
+| Error maps for the paper | `maps.py` | `build_maps.py` (no dry run) |
 | Persistence on the test set | `notebooks/kaggle/persistence/` (CPU) | - |
 
 Ablation variants, each run once on seed 42: `afnov4_allskip`, `afnov4_pad`, `afnov4_nosparse`, `resgru_norec`. Verdict: `python scripts/ablation_verdict.py <analysis.json> <dir with summary_<variant>.json> [out.json]`.
 
-## Safety in each notebook
+## Safety in each training notebook
 
 - Fails fast if there is no usable CUDA GPU, if the competition data or the V4 output is missing, or if the V4 seed-42 checkpoint re-evaluated in the notebook is more than 0.002 from its logged val score.
 - The micro-batch is picked by a memory probe (4, 2 or 1). Gradients are accumulated to an effective batch of 4, with the same optimizer steps per epoch.
