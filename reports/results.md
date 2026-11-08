@@ -66,6 +66,7 @@ Same 214 val windows, ug/m3, pooled over every value. Test labels are hidden, so
 |---|---|---|---|
 | persistence | 10.44 | 26.46 | 0.767 |
 | seasonal naive (same hour, 24 h earlier; val only) | 11.53 | 26.80 | 0.761 |
+| ridge regression (private 0.7951) | 8.51 | 21.48 | 0.847 |
 | round one, seed 42: ResGRU-UNet / AFNO V4 / FMG-WACLU / patch AFNO / ConvLSTM | 6.57 / 7.31 / 7.14 / 6.85 / 7.05 | 18.57 / 20.17 / 19.32 / 19.02 / 18.93 | 0.885 / 0.865 / 0.876 / 0.880 / 0.881 |
 | 2-seed mean: ResGRU-UNet / AFNO V4 | 6.40 / 7.15 | 18.21 / 19.73 | 0.890 / 0.871 |
 | 5 single seeds, mean: ResGRU-UNet / AFNO V4 | 6.58 / 7.22 | 18.59 / 19.92 | 0.885 / 0.868 |
