@@ -560,13 +560,13 @@ H4 & ResGRU-UNet, ConvGRU replaced & $-0.00174$ & $-0.36$ & 0.8798 \\
 For 16-hour \PM{} forecasting over India, the pipeline mattered more than the network. Physics channels for mixing and transport, a log-space persistence residual, validation that reproduces the test, a loss matched to the score, and ensembling with calibration gave the same network a gain 6 to 8 times the gap between the two best networks. Inside one fixed pipeline, a plain convolutional-recurrent U-Net beat the Fourier neural operator hybrid on every seed pair, lead hour, month and regression metric, and it is also cheaper to run. No single component we tested explains the gap; the Fourier model generalizes less well across months, which fits a transport problem that is local and not periodic. A natural next step is a hybrid that adds a gradient-boosted correction, built on the Phase 1 features, to the network's forecast.
 
 \section*{Reproducibility}
-The code is at \url{https://github.com/Vetri-78640/dl_pm2.5}: the shared pipeline and every network (\texttt{src/}), the notebook builders and tools (\texttt{scripts/}), the synthetic dry runs and port checks (\texttt{tests/}), the Kaggle notebooks exactly as they ran (\texttt{notebooks/kaggle/}), the unchanged AFNO V4 script (\texttt{reference/afno\_v4/}), and the results and figures (\texttt{reports/}).
+The code is at \url{https://github.com/Vetri-78640/dl_pm2.5}: the shared pipeline and every network (\texttt{src/}), the notebook builders and Kaggle tools (\texttt{scripts/}), the dry runs, port check and config test (\texttt{tests/}), six local notebooks with outputs (\texttt{notebooks/}; \texttt{notebooks/kaggle/} holds the Kaggle notebooks exactly as they ran, with their run logs), the study settings (\texttt{configs/}), the run records (\texttt{results/}), the AFNO V4 script and the original notebooks of the ported networks (\texttt{reference/}), and the result tables, figures and this report (\texttt{reports/}). The competition data is not included; see \texttt{data/README.md}.
 
 \section*{Team contributions}
 \begin{itemize}
-\item \textbf{Vetriselvan R}: model architectures: AFNO V4, ResGRU-UNet, the ports of the other three networks, and the ablation variants.
+\item \textbf{Vetriselvan R}: study design and decision rules (fixed before training); model architectures: AFNO V4, ResGRU-UNet, the ports of the other three networks, the port check and the ablation variants; the round-one, final-round and ablation runs; and this report.
 \item \textbf{Hrishi Dongre}: training pipeline: loss, optimization and schedule, seed runs and the Kaggle notebooks.
-\item \textbf{Pampana Sree Adithya}: experiments, analysis and documentation: study design and decision rules, statistics, figures and this report.
+\item \textbf{Pampana Sree Adithya}: experiments and analysis: 5-seed statistics and block bootstrap, the ablation verdict, figures and error maps.
 \item \textbf{Ishan Goyal}: data and pre-processing: exploration, physics channels, normalization, the temporal split and episode masks.
 \item \textbf{Vedant Madne}: evaluation and post-processing: the metric, calibration, ensembles, the baselines including ridge, and the regression metrics.
 \end{itemize}
