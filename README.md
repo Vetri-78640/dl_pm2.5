@@ -29,7 +29,7 @@ AML/DL Project 19 - Team T024, Section A - Phase 2
 
 ## Overview
 
-The task is a 16-hour PM2.5 forecast over India, made from 10 hours of WRF-Chem fields on a 140 x 124 grid. AFNO V4 (an Adaptive Fourier Neural Operator hybrid) was the team's best model, at a test score of 0.8833. But the pipeline changed alongside the AFNO iterations: a leak-free split, official episode masks, an hour fix and physics channels. So the leaderboard scores of the model families mix architecture with pipeline. This study asks one question: **once every network gets the same pipeline, is AFNO V4 still the best?**
+The task is a 16-hour PM2.5 forecast over India, made from 10 hours of WRF-Chem fields on a 140 x 124 grid. AFNO V4 (a U-Net with Adaptive Fourier Neural Operator blocks) was the team's best model, at a test score of 0.8833. But the pipeline changed alongside the AFNO iterations: a leak-free split, official episode masks, an hour fix and physics channels. So the leaderboard scores of the model families mix architecture with pipeline. This study asks one question: **once every network gets the same pipeline, is AFNO V4 still the best?**
 
 Each network is trained inside AFNO V4's fixed pipeline: same inputs, split, loss, schedule, epochs and validation windows. The decision rule was written down on 2026-11-07, before any training.
 
@@ -363,8 +363,7 @@ dl_pm2.5/
 ├── reports/
 │   ├── paper/                     report.tex, report.pdf, figures
 │   ├── figures/                   5-seed figures
-│   ├── results.md                 every result table
-│   └── paper_draft.md             paper draft
+│   └── results.md                 every result table
 └── pyproject.toml
 ```
 
