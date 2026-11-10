@@ -48,7 +48,7 @@
 \maketitle
 
 \begin{abstract}
-We forecast \PM{} over all of India 16 hours ahead, on a $140\times124$ grid of about 25~km cells, from 10 hours of WRF-Chem simulation fields. Phase 1 forecast one Beijing station with gradient boosting. Phase 2 uses deep learning and asks how much of a forecaster's skill comes from its network and how much from the pipeline around it. Over seven development iterations we built a physics-informed pipeline: ventilation, advection and tendency channels, a log-space persistence residual, a leak-free temporal validation, a loss matched to the evaluation metric, and seed ensembles with per-hour calibration. Five networks were then trained inside this one pipeline, with decision rules fixed before each stage and 1, 2 and 5 seeds. A U-Net with a convolutional GRU over lead time (ResGRU-UNet, 7.1M parameters) beats an adaptive Fourier neural operator hybrid (AFNO V4, 7.0M) on all 25 seed pairs and at every lead hour. On 214 validation windows its five-seed mean reaches MAE 6.32~\ugm, RMSE 18.04 and $R^2$ 0.892, against 6.99, 19.45 and 0.874 for AFNO V4, 8.51, 21.48 and 0.847 for ridge regression, and 10.44, 26.46 and 0.767 for persistence: 31.8\% lower RMSE than persistence. On the held-out test set it scores 0.8914 against 0.8848. Moving the same network into the improved pipeline gained 6 to 8 times more than swapping the network. Four single-change ablations do not explain the gap between the networks; training curves show that AFNO V4 generalizes less well to unseen months.
+We forecast \PM{} over all of India 16 hours ahead, on a $140\times124$ grid of about 25~km cells, from 10 hours of WRF-Chem simulation fields. Phase 1 forecast one Beijing station with gradient boosting. Phase 2 uses deep learning and asks how much of a forecaster's skill comes from its network and how much from the pipeline around it. Over seven development iterations we built a physics-informed pipeline: ventilation, advection and tendency channels, a log-space persistence residual, a leak-free temporal validation, a loss matched to the evaluation metric, and seed ensembles with per-hour calibration. Five networks were then trained inside this one pipeline, with decision rules fixed before each stage and 1, 2 and 5 seeds. A U-Net with a convolutional GRU over lead time (ResGRU-UNet, 7.1M parameters) beats an adaptive Fourier neural operator hybrid (AFNO V4, 7.0M) on all 25 seed pairs and at every lead hour. On 214 validation windows its five-seed mean reaches MAE 6.32~\ugm, RMSE 18.04 and $R^2$ 0.892, against 6.99, 19.45 and 0.874 for AFNO V4, 8.51, 21.48 and 0.847 for ridge regression, and 10.44, 26.46 and 0.767 for persistence: 31.8\% lower RMSE than persistence. On the held-out test set it scores 0.8914 against 0.8848. Moving the same network into the improved pipeline gained 6 to 8 times more than swapping the network. Four single-change ablations do not explain the gap between the networks; training curves show that AFNO V4 generalizes less well to unseen months. An ML + DL hybrid, a gradient-boosted correction of the ensemble forecast tested with one month left out, lowers RMSE to 17.75 but lowers the benchmark score from 0.9193 to 0.9051 in all four months, so it is reported and not adopted.
 \end{abstract}
 
 \section{Introduction}
@@ -61,6 +61,7 @@ Our contributions are:
 \item a physics-informed, leak-free pipeline built over seven iterations, with the reason for each move and its measured effect (Sections~\ref{sec:theory} to \ref{sec:history});
 \item a controlled study of five networks inside that one pipeline, with decision rules fixed before each stage and 1, 2 and 5 seeds (Section~\ref{sec:study});
 \item MAE, RMSE and $R^2$ for every model against persistence, seasonal-naive and ridge baselines, maps of where the errors fall, and the finding that model rankings depend on the metric (Section~\ref{sec:results});
+\item an ML + DL hybrid, a gradient-boosted correction of the network ensemble, tested out of fold under a rule fixed before the run (Section~\ref{sec:hybrid});
 \item ablations and training curves that test why the convolutional-recurrent network wins (Section~\ref{sec:ablation}).
 \end{itemize}
 
@@ -406,7 +407,7 @@ Table~\ref{tab:regression} gives MAE, RMSE, $R^2$ and skill on validation for ev
 
 \begin{table}[!t]
 \centering
-\caption{Validation regression metrics (MAE, RMSE in \ugm) over all $5.9\times10^7$ values, with the benchmark score $S$. Skill: lower RMSE than persistence}
+\caption{Validation regression metrics (MAE, RMSE in \ugm) over all $5.9\times10^7$ values, with the benchmark score $S$. Skill: lower RMSE than persistence. The hybrid row is out of fold (one month left out)}
 \label{tab:regression}
 \setlength{\tabcolsep}{2.6pt}
 \begin{tabular}{@{}lrrrrr@{}}
@@ -427,8 +428,9 @@ ResGRU-UNet & 6.57 & 18.57 & 0.885 & 29.8\% & 0.9158 \\
 \multicolumn{6}{@{}l}{\textit{Five-seed means}} \\
 AFNO V4 & 6.99 & 19.45 & 0.874 & 26.5\% & 0.9145 \\
 \ + calibration & 7.76 & 20.90 & 0.855 & 21.0\% & 0.9149 \\
-ResGRU-UNet & \textbf{6.32} & \textbf{18.04} & \textbf{0.892} & \textbf{31.8\%} & 0.9193 \\
+ResGRU-UNet & \textbf{6.32} & 18.04 & 0.892 & 31.8\% & 0.9193 \\
 \ + calibration & 7.12 & 19.71 & 0.871 & 25.5\% & \textbf{0.9210} \\
+\ + LightGBM (hybrid) & 6.42 & \textbf{17.75} & \textbf{0.895} & \textbf{32.9\%} & 0.9051 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -469,6 +471,12 @@ Calibration raises the score but worsens MAE, RMSE and $R^2$ for both finalists 
 \caption{Calibration moves both finalists to a higher score and a higher MAE (validation; in sample for 2 seeds, leave one month out for 5 seeds).}
 \label{fig:calib}
 \end{figure}
+
+\subsection{ML + DL hybrid: a boosted correction}
+\label{sec:hybrid}
+We tested whether a classical model can correct the network. A LightGBM model \cite{ke2017lightgbm} (300 trees, 31 leaves, Huber loss, fixed settings) predicts the error of the uncalibrated ResGRU-UNet five-seed ensemble in $\log(1+y)$, and the forecast is shifted by it. It uses 33 features per cell and lead hour: the 20 input channels at the last hour, $\log(1+y)$ at the nine earlier hours, the ensemble forecast, its change from the last hour, the spread of the five seeds, and the lead hour. It is fitted on every fourth cell in each direction. The rule was written before the run: fit on the validation windows of three months and predict the fourth, for all four months, and call the hybrid better only if its pooled score is higher and it wins in at least three months.
+
+The verdict is no gain. The hybrid scores lower in all four held-out months ($-0.0162$, $-0.0151$, $-0.0068$ and $-0.0188$ for April, July, October and December) and 0.9051 against 0.9193 pooled. RMSE and $R^2$ improve slightly (17.75 against 18.04; 0.895 against 0.892) and MAE is slightly worse (6.42 against 6.32), but episode SMAPE rises from 0.235 to 0.305. This is the calibration trade-off in reverse, and it fits the theory of Section~\ref{sec:theory}: a symmetric loss in log space pulls forecasts toward the typical value, which removes the upward shift that the episode terms reward. The model leaned most on the forecast's change from the last hour and on the seed spread (15\% and 13\% of its split gain). The hybrid was not submitted to the test set, as the rule required a win first.
 
 \subsection{Where ResGRU-UNet wins}
 It is ahead in all four validation months and in five of six concentration bins (Fig.~\ref{fig:where}). Both models under-predict episode cells (mean log bias $-0.160$ for AFNO V4 and $-0.157$ for ResGRU-UNet) and over-predict the other cells ($+0.084$ and $+0.062$), most of all in the cleanest bin (Fig.~\ref{fig:where}, middle). ResGRU-UNet's smaller over-prediction outside episodes is consistent with its larger gain in the global term.
@@ -554,21 +562,22 @@ H4 & ResGRU-UNet, ConvGRU replaced & $-0.00174$ & $-0.36$ & 0.8798 \\
 \item The recipe was tuned for AFNO V4, which if anything favours it; ResGRU-UNet was not tuned.
 \item The later rounds were designed after round one's result, adjacent bootstrap blocks overlap in time, and the ablations use one seed each.
 \item The pipeline gain bundles several changes that we did not separate.
+\item The hybrid was tested in one fixed configuration, on the validation windows that also chose each network's best epoch, and has no test score.
 \end{itemize}
 
 \section{Conclusion}
-For 16-hour \PM{} forecasting over India, the pipeline mattered more than the network. Physics channels for mixing and transport, a log-space persistence residual, validation that reproduces the test, a loss matched to the score, and ensembling with calibration gave the same network a gain 6 to 8 times the gap between the two best networks. Inside one fixed pipeline, a plain convolutional-recurrent U-Net beat the Fourier neural operator hybrid on every seed pair, lead hour, month and regression metric, and it is also cheaper to run. No single component we tested explains the gap; the Fourier model generalizes less well across months, which fits a transport problem that is local and not periodic. A natural next step is a hybrid that adds a gradient-boosted correction, built on the Phase 1 features, to the network's forecast.
+For 16-hour \PM{} forecasting over India, the pipeline mattered more than the network. Physics channels for mixing and transport, a log-space persistence residual, validation that reproduces the test, a loss matched to the score, and ensembling with calibration gave the same network a gain 6 to 8 times the gap between the two best networks. Inside one fixed pipeline, a plain convolutional-recurrent U-Net beat the Fourier neural operator hybrid on every seed pair, lead hour, month and regression metric, and it is also cheaper to run. No single component we tested explains the gap; the Fourier model generalizes less well across months, which fits a transport problem that is local and not periodic. A gradient-boosted correction of the ensemble lowered squared error but not the benchmark score, so the next step for a hybrid is a correction trained on the score's own terms, as the networks are.
 
 \section*{Reproducibility}
 The code is at \url{https://github.com/Vetri-78640/dl_pm2.5}: the shared pipeline and every network (\texttt{src/}), the notebook builders and Kaggle tools (\texttt{scripts/}), the dry runs, port check and config test (\texttt{tests/}), six local notebooks with outputs (\texttt{notebooks/}; \texttt{notebooks/kaggle/} holds the Kaggle notebooks exactly as they ran, with their run logs), the study settings (\texttt{configs/}), the run records (\texttt{results/}), the AFNO V4 script and the original notebooks of the ported networks (\texttt{reference/}), and the result tables, figures and this report (\texttt{reports/}). The competition data is not included; see \texttt{data/README.md}.
 
 \section*{Team contributions}
 \begin{itemize}
-\item \textbf{Vetriselvan R}: study design and decision rules (fixed before training); model architectures: AFNO V4, ResGRU-UNet, the ports of the other three networks, the port check and the ablation variants; the round-one, final-round and ablation runs; and this report.
-\item \textbf{Hrishi Dongre}: training pipeline: loss, optimization and schedule, seed runs and the Kaggle notebooks.
+\item \textbf{Ishan Goyal}: data and pre-processing: data analysis, the 20 input channels, normalization, the hour estimate, the leak-free split and episode masks.
+\item \textbf{Vetriselvan R}: study design and decision rules (fixed before training); model architectures: AFNO V4, ResGRU-UNet, the ports of the other three networks, the port check and the ablation variants; the round-one, final-round, ablation and hybrid runs; and this report.
+\item \textbf{Hrishi Dongre}: training pipeline: loss, optimizer and schedule, weight averaging, checkpoints and resume, the notebook builders and the seed runs.
+\item \textbf{Vedant Madne}: evaluation and post-processing: seed ensembles and calibration, the persistence, seasonal-naive and ridge baselines, and MAE, RMSE and $R^2$.
 \item \textbf{Pampana Sree Adithya}: experiments and analysis: 5-seed statistics and block bootstrap, the ablation verdict, figures and error maps.
-\item \textbf{Ishan Goyal}: data and pre-processing: exploration, physics channels, normalization, the temporal split and episode masks.
-\item \textbf{Vedant Madne}: evaluation and post-processing: the metric, calibration, ensembles, the baselines including ridge, and the regression metrics.
 \end{itemize}
 
 \begin{thebibliography}{99}
@@ -602,6 +611,7 @@ The code is at \url{https://github.com/Vetri-78640/dl_pm2.5}: the shared pipelin
 \bibitem{cleveland1990} R. B. Cleveland, W. S. Cleveland, J. E. McRae, and I. Terpenning, ``STL: A seasonal-trend decomposition procedure based on loess,'' \emph{J. Off. Stat.}, vol. 6, no. 1, pp. 3--73, 1990.
 \bibitem{iyer2013} U. S. Iyer and P. E. Raj, ``Ventilation coefficient trends in the recent decades over four major Indian metropolitan cities,'' \emph{J. Earth Syst. Sci.}, vol. 122, no. 2, pp. 537--549, 2013.
 \bibitem{staniforth1991} A. Staniforth and J. C\^{o}t\'{e}, ``Semi-Lagrangian integration schemes for atmospheric models: A review,'' \emph{Mon. Weather Rev.}, vol. 119, no. 9, pp. 2206--2223, 1991.
+\bibitem{ke2017lightgbm} G. Ke \emph{et al.}, ``LightGBM: A highly efficient gradient boosting decision tree,'' in \emph{Adv. Neural Inf. Process. Syst.}, vol. 30, 2017, pp. 3146--3154.
 \bibitem{koenker1978} R. Koenker and G. Bassett Jr., ``Regression quantiles,'' \emph{Econometrica}, vol. 46, no. 1, pp. 33--50, 1978.
 \end{thebibliography}
 
