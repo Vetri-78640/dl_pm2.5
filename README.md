@@ -49,6 +49,7 @@ The pipeline mattered more than the backbone: moving one network into the improv
 | Controlled study | Round one, final round, 5 seeds, ablations: [`06_analysis_and_ablations`](notebooks/06_analysis_and_ablations.ipynb) | Done, test scored |
 | ML + DL hybrid | LightGBM correction of the ResGRU-UNet ensemble, tested by leaving one month out: [`src/hybrid.py`](src/hybrid.py) | Done, no gain |
 | Report | [`reports/paper/report.pdf`](reports/paper/report.pdf) | Done |
+| Slides | [`reports/phase2_slides.pdf`](reports/phase2_slides.pdf) | Done |
 
 ---
 
@@ -374,6 +375,7 @@ dl_pm2.5/
 │   └── originals/                 original notebooks of the four ported networks
 ├── reports/
 │   ├── paper/                     report.tex, report.pdf, figures
+│   ├── phase2_slides.pdf          the Phase 2 presentation
 │   ├── figures/                   5-seed figures
 │   └── results.md                 every result table
 └── pyproject.toml
@@ -392,6 +394,7 @@ dl_pm2.5/
 - [x] ML + DL hybrid, tested out of fold (no gain)
 - [x] Local notebooks, config, tests and run records
 - [x] Report
+- [x] Phase 2 slides
 - [ ] Phase 2 presentation and viva
 
 ---
