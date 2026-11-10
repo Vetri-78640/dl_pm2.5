@@ -1,0 +1,223 @@
+{
+ "rule": "better only if the pooled out-of-fold score is higher and the hybrid wins in at least 3 of 4 held-out months",
+ "rule_date": "2026-11-10",
+ "verdict": "no gain",
+ "months_won": 0,
+ "pooled": {
+  "ensemble": {
+   "score": 0.91933,
+   "gsmape": 0.1886,
+   "esmape": 0.23521,
+   "ecorr": 0.93982,
+   "mae": 6.3238,
+   "rmse": 18.043,
+   "r2": 0.89177
+  },
+  "hybrid": {
+   "score": 0.90511,
+   "gsmape": 0.19283,
+   "esmape": 0.30505,
+   "ecorr": 0.92856,
+   "mae": 6.4236,
+   "rmse": 17.7541,
+   "r2": 0.89521
+  },
+  "score_gain": -0.01422
+ },
+ "folds": {
+  "APRIL_16": {
+   "n_fit_rows": 2812320,
+   "n_fit_windows": 162,
+   "n_test_windows": 52,
+   "ensemble": {
+    "score": 0.91615,
+    "gsmape": 0.16752,
+    "esmape": 0.25339,
+    "ecorr": 0.91783,
+    "mae": 4.0306,
+    "rmse": 12.5277,
+    "r2": 0.66092
+   },
+   "hybrid": {
+    "score": 0.89991,
+    "gsmape": 0.17211,
+    "esmape": 0.32884,
+    "ecorr": 0.90041,
+    "mae": 3.8472,
+    "rmse": 11.7604,
+    "r2": 0.70118
+   },
+   "score_gain": -0.01624
+  },
+  "JULY_16": {
+   "n_fit_rows": 2777600,
+   "n_fit_windows": 160,
+   "n_test_windows": 54,
+   "ensemble": {
+    "score": 0.90909,
+    "gsmape": 0.20976,
+    "esmape": 0.28269,
+    "ecorr": 0.94699,
+    "mae": 3.0594,
+    "rmse": 10.4325,
+    "r2": 0.82391
+   },
+   "hybrid": {
+    "score": 0.89395,
+    "gsmape": 0.22008,
+    "esmape": 0.35706,
+    "ecorr": 0.94081,
+    "mae": 3.0662,
+    "rmse": 10.9068,
+    "r2": 0.80753
+   },
+   "score_gain": -0.01514
+  },
+  "OCT_16": {
+   "n_fit_rows": 2777600,
+   "n_fit_windows": 160,
+   "n_test_windows": 54,
+   "ensemble": {
+    "score": 0.92711,
+    "gsmape": 0.18547,
+    "esmape": 0.18421,
+    "ecorr": 0.93236,
+    "mae": 6.8395,
+    "rmse": 16.3815,
+    "r2": 0.84886
+   },
+   "hybrid": {
+    "score": 0.92034,
+    "gsmape": 0.17776,
+    "esmape": 0.22519,
+    "ecorr": 0.925,
+    "mae": 6.1641,
+    "rmse": 13.851,
+    "r2": 0.89195
+   },
+   "score_gain": -0.00677
+  },
+  "DEC_16": {
+   "n_fit_rows": 2777600,
+   "n_fit_windows": 160,
+   "n_test_windows": 54,
+   "ensemble": {
+    "score": 0.92486,
+    "gsmape": 0.19089,
+    "esmape": 0.22123,
+    "ecorr": 0.96127,
+    "mae": 11.2806,
+    "rmse": 27.6011,
+    "r2": 0.89725
+   },
+   "hybrid": {
+    "score": 0.90607,
+    "gsmape": 0.20062,
+    "esmape": 0.30997,
+    "ecorr": 0.94698,
+    "mae": 12.5213,
+    "rmse": 28.3753,
+    "r2": 0.8914
+   },
+   "score_gain": -0.01879
+  }
+ },
+ "mean_abs_correction_log": 0.07219,
+ "params": {
+  "objective": "huber",
+  "alpha": 0.5,
+  "n_estimators": 300,
+  "learning_rate": 0.05,
+  "num_leaves": 31,
+  "min_child_samples": 500,
+  "subsample": 0.8,
+  "subsample_freq": 1,
+  "colsample_bytree": 0.8,
+  "reg_lambda": 10.0,
+  "random_state": 0,
+  "n_jobs": -1,
+  "verbose": -1
+ },
+ "features": [
+  "cpm25_last",
+  "q2_last",
+  "t2_last",
+  "u10_last",
+  "v10_last",
+  "pblh_last",
+  "psfc_last",
+  "swdown_last",
+  "rain_last",
+  "wind_speed",
+  "ventilation",
+  "advection",
+  "tendency",
+  "hour_sin",
+  "hour_cos",
+  "diurnal_anomaly",
+  "lat",
+  "lon",
+  "pm_climatology",
+  "stl_sigma",
+  "pm_h-9",
+  "pm_h-8",
+  "pm_h-7",
+  "pm_h-6",
+  "pm_h-5",
+  "pm_h-4",
+  "pm_h-3",
+  "pm_h-2",
+  "pm_h-1",
+  "base_log",
+  "base_change",
+  "seed_spread",
+  "lead_hour"
+ ],
+ "pixel_stride": 4,
+ "n_val_windows": 214,
+ "limit": "the val windows also picked the best epoch of each network; this tests the correction only",
+ "importance_gain_share_all_months_fit": {
+  "base_change": 0.1456,
+  "seed_spread": 0.1311,
+  "lon": 0.0722,
+  "lat": 0.0707,
+  "base_log": 0.0666,
+  "pm_climatology": 0.0573,
+  "stl_sigma": 0.0537,
+  "psfc_last": 0.0429,
+  "lead_hour": 0.0422,
+  "q2_last": 0.0412,
+  "pm_h-9": 0.0277,
+  "t2_last": 0.0274,
+  "u10_last": 0.0249,
+  "rain_last": 0.0239,
+  "hour_cos": 0.0178,
+  "swdown_last": 0.0175,
+  "cpm25_last": 0.0153,
+  "v10_last": 0.0135,
+  "diurnal_anomaly": 0.0126,
+  "hour_sin": 0.0122,
+  "wind_speed": 0.012,
+  "ventilation": 0.0112,
+  "pm_h-1": 0.0111,
+  "pm_h-8": 0.0109,
+  "pblh_last": 0.0096,
+  "advection": 0.0049,
+  "tendency": 0.0048,
+  "pm_h-2": 0.004,
+  "pm_h-3": 0.004,
+  "pm_h-7": 0.0033,
+  "pm_h-4": 0.0031,
+  "pm_h-6": 0.0029,
+  "pm_h-5": 0.0019
+ },
+ "checks": {
+  "zero correction reproduces the ensemble score (within 1e-5)": true,
+  "no fold is fitted on its own month": true,
+  "every val window is predicted out of fold exactly once": true,
+  "hybrid predictions finite and non-negative": true,
+  "ensemble score equals the 5-seed analysis (0.9193 within 1e-4)": true
+ },
+ "all_checks_pass": true,
+ "minutes": 10.9
+}

@@ -1,0 +1,23 @@
+{
+  "id": "imvetri0/code4cleanair-backbone-study-hybrid",
+  "title": "Code4CleanAir Backbone Study - Hybrid",
+  "code_file": "code4cleanair-backbone-study-hybrid.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "machine_shape": "NvidiaTeslaT4",
+  "enable_tpu": false,
+  "enable_internet": false,
+  "dataset_sources": [],
+  "competition_sources": [
+    "anrf-aise-hack-phase-2-theme-2-pollution-forecasting-iitd"
+  ],
+  "kernel_sources": [
+    "imvetri0/afno-v4",
+    "imvetri0/code4cleanair-backbone-study-resgru-unet",
+    "imvetri0/code4cleanair-backbone-study-final-round",
+    "imvetri0/code4cleanair-backbone-study-seeds-1-3-resgru"
+  ],
+  "model_sources": []
+}
