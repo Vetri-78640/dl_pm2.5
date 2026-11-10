@@ -9,6 +9,7 @@ dependencies = [
     "matplotlib",
     "statsmodels",
     "pyyaml",
+    "lightgbm",
 ]
 
 [project.optional-dependencies]
