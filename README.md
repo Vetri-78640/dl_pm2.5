@@ -47,6 +47,7 @@ The pipeline mattered more than the backbone: moving one network into the improv
 | Training | One recipe for every network, regularization, training curves: [`04_training`](notebooks/04_training.ipynb) | Done |
 | Evaluation | Benchmark score, persistence, seasonal naive, ridge, MAE / RMSE / R²: [`05_evaluation`](notebooks/05_evaluation.ipynb) | Done, test scored |
 | Controlled study | Round one, final round, 5 seeds, ablations: [`06_analysis_and_ablations`](notebooks/06_analysis_and_ablations.ipynb) | Done, test scored |
+| ML + DL hybrid | LightGBM correction of the ResGRU-UNet ensemble, tested by leaving one month out: [`src/hybrid.py`](src/hybrid.py) | Done, no gain |
 | Report | [`reports/paper/report.pdf`](reports/paper/report.pdf) | Done |
 
 ---
@@ -263,6 +264,15 @@ At the same setting, the backbone gap (ResGRU-UNet over AFNO V4) is +0.0036.
 
 No single change explains the 0.0048 gap. An exploratory finding, not pre-registered: at the same training loss, AFNO V4's validation loss is 6.8% higher than ResGRU-UNet's across seeds, a larger generalization gap.
 
+**ML + DL hybrid: a gradient-boosted correction of the network.** A LightGBM model (300 trees, Huber loss) predicts the log error of the uncalibrated ResGRU-UNet 5-seed ensemble from 33 features: the 20 input channels at the last hour, log PM2.5 at the 9 earlier hours, the ensemble forecast, its change from the last hour, the spread of the 5 seeds and the lead hour. The rule was fixed before the run: fit on the validation windows of three months, predict the fourth, and call the hybrid better only if its pooled score is higher and it wins in at least 3 of 4 months.
+
+| Model (validation, out of fold) | MAE | RMSE | R² | Episode SMAPE | Score |
+|:--|--:|--:|--:|--:|--:|
+| ResGRU-UNet 5-seed ensemble | 6.32 | 18.04 | 0.892 | 0.235 | **0.9193** |
+| Hybrid: ensemble + LightGBM correction | 6.42 | 17.75 | 0.895 | 0.305 | 0.9051 |
+
+Verdict: no gain. The hybrid lost in all four held-out months (April -0.0162, July -0.0151, October -0.0068, December -0.0188). RMSE and R² improved slightly, but episode SMAPE got worse, so the hybrid is not used and was not submitted to the test set. The validation windows also chose each network's best epoch, so this tests the correction only. Record: [`results/hybrid/hybrid.json`](results/hybrid/hybrid.json).
+
 **How the pipeline got here** (test score, Kaggle private leaderboard; [`results/earlier_iterations.csv`](results/earlier_iterations.csv))
 
 | Iteration | Model | Change | Test |
@@ -305,7 +315,7 @@ The settings live in [`configs/study.yaml`](configs/study.yaml): data, split, ep
 
 **Rules for the Kaggle notebooks**
 
-- [`notebooks/kaggle/`](notebooks/kaggle/) holds the 15 notebooks exactly as they ran, each with its `run_log.txt`.
+- [`notebooks/kaggle/`](notebooks/kaggle/) holds the 16 notebooks exactly as they ran, each with its `run_log.txt`.
 - The builders (`scripts/build_*.py`) write into that folder and would overwrite them, so run builders only in a copy of the repo.
 - Rebuilding a round-one notebook from the current `src/study.py` changes one line: those notebooks hard-code seed 42, while `study.py` now reads a top-level `SEED`.
 - Each training notebook checks for a usable GPU and the attached data. It also re-evaluates the V4 seed-42 checkpoint and stops if the result is more than 0.002 from its logged score. It saves a checkpoint every epoch, stops cleanly at a 10.5 h time budget and can resume from its own output.
@@ -318,6 +328,7 @@ The settings live in [`configs/study.yaml`](configs/study.yaml): data, split, ep
 | `results/regression/`, `baselines/`, `ridge/` | MAE, RMSE, R² and score for every model and baseline |
 | `results/analysis/analysis.json` | 5-seed statistics, block bootstrap, breakdowns by lead hour, month and concentration |
 | `results/maps/` | per-cell error maps, 5-seed means |
+| `results/hybrid/hybrid.json` | the hybrid's out-of-fold scores, per month, rule and verdict |
 | `results/test_scores.csv`, `earlier_iterations.csv` | every test score of the study, the pipeline history |
 | `reports/figures/`, `reports/paper/` | figures, the report source and PDF |
 
@@ -337,7 +348,7 @@ dl_pm2.5/
 │   ├── 04_training.ipynb          recipe, loss, regularization, training curves
 │   ├── 05_evaluation.ipynb        score, baselines, ridge, MAE / RMSE / R², calibration
 │   ├── 06_analysis_and_ablations.ipynb  decision rules, rounds, 5 seeds, maps, ablations
-│   └── kaggle/                    the 15 Kaggle notebooks as they ran, with run logs
+│   └── kaggle/                    the 16 Kaggle notebooks as they ran, with run logs
 ├── src/
 │   ├── study.py                   shared pipeline and all 5 networks (Kaggle source)
 │   ├── ablations.py               the four single-change variants
@@ -346,6 +357,7 @@ dl_pm2.5/
 │   ├── regression.py              MAE, RMSE and R² for every model
 │   ├── baselines.py, ridge.py     persistence, seasonal naive, ridge regression
 │   ├── maps.py                    per-cell error maps
+│   ├── hybrid.py                  LightGBM correction of the network ensemble
 │   └── local.py                   loads the as-ran code for the local notebooks
 ├── scripts/
 │   ├── build_*.py                 build each Kaggle notebook from src/
@@ -377,6 +389,7 @@ dl_pm2.5/
 - [x] Final round and 5 seeds per finalist with a block bootstrap
 - [x] Persistence, seasonal-naive and ridge baselines; MAE, RMSE and R² for every model
 - [x] Ablations H1 to H4
+- [x] ML + DL hybrid, tested out of fold (no gain)
 - [x] Local notebooks, config, tests and run records
 - [x] Report
 - [ ] Phase 2 presentation and viva
