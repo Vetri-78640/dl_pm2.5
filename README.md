@@ -48,7 +48,7 @@ The pipeline mattered more than the backbone: moving one network into the improv
 | Evaluation | Benchmark score, persistence, seasonal naive, ridge, MAE / RMSE / R²: [`05_evaluation`](notebooks/05_evaluation.ipynb) | Done, test scored |
 | Controlled study | Round one, final round, 5 seeds, ablations: [`06_analysis_and_ablations`](notebooks/06_analysis_and_ablations.ipynb) | Done, test scored |
 | ML + DL hybrid | LightGBM correction of the ResGRU-UNet ensemble, tested by leaving one month out: [`src/hybrid.py`](src/hybrid.py) | Done, no gain |
-| Report | [`reports/paper/report.pdf`](reports/paper/report.pdf) | Done |
+| Report | [`reports/report.pdf`](reports/report.pdf) | Done |
 | Slides | [`reports/phase2_slides.pdf`](reports/phase2_slides.pdf) | Done |
 
 ---
@@ -287,7 +287,7 @@ Verdict: no gain. The hybrid lost in all four held-out months (April -0.0162, Ju
 | 7 | AFNO V4 | physics channels, multiscale block, lead-hour weights, 2 seeds, calibration | 0.8833 |
 | 8 | ResGRU-UNet | in the V4 pipeline, 5 seeds, calibration | **0.8914** |
 
-All result tables: [`reports/results.md`](reports/results.md). Full write-up: [`reports/paper/report.pdf`](reports/paper/report.pdf).
+All result tables: [`reports/results.md`](reports/results.md). Full write-up: [`reports/report.pdf`](reports/report.pdf).
 
 ---
 
@@ -331,7 +331,7 @@ The settings live in [`configs/study.yaml`](configs/study.yaml): data, split, ep
 | `results/maps/` | per-cell error maps, 5-seed means |
 | `results/hybrid/hybrid.json` | the hybrid's out-of-fold scores, per month, rule and verdict |
 | `results/test_scores.csv`, `earlier_iterations.csv` | every test score of the study, the pipeline history |
-| `reports/figures/`, `reports/paper/` | figures, the report source and PDF |
+| `reports/report.pdf`, `reports/paper/`, `reports/figures/` | the report, its source and figures |
 
 ---
 
@@ -374,8 +374,9 @@ dl_pm2.5/
 │   ├── afno_v4/                   AFNO V4 training script, unchanged
 │   └── originals/                 original notebooks of the four ported networks
 ├── reports/
-│   ├── paper/                     report.tex, report.pdf, figures
+│   ├── report.pdf                 the Phase 2 report
 │   ├── phase2_slides.pdf          the Phase 2 presentation
+│   ├── paper/                     report.tex and its figures
 │   ├── figures/                   5-seed figures
 │   └── results.md                 every result table
 └── pyproject.toml
